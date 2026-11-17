@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<title>校招简历看板 · 广州大学城 11.14</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --ink2:#5c5c5c; --ink3:#8c8c8c;
+    --line:#e8e8e8; --bg:#f6f7f9; --card:#ffffff;
+    --blue:#2f5597; --blue-l:#eaf0fa;
+    --gold:#bf9000;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;padding:28px 24px 56px}
+  .wrap{max-width:1180px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;
+    padding-bottom:18px;border-bottom:2px solid var(--ink);margin-bottom:22px;flex-wrap:wrap}
+  h1{font-size:26px;letter-spacing:-.4px;font-weight:700}
+  h1 span{color:var(--blue)}
+  .sub{font-size:12.5px;color:var(--ink3);margin-top:7px;line-height:1.7}
+  .stamp{font-size:12px;color:var(--ink3);text-align:right;line-height:1.8}
+  .stamp b{color:var(--ink);font-size:15px}
+
+  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:22px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:15px 14px 13px}
+  .kpi .k{font-size:11.5px;color:var(--ink3);letter-spacing:.3px;margin-bottom:9px;line-height:1.4}
+  .kpi .v{font-size:27px;font-weight:700;letter-spacing:-1px;line-height:1}
+  .kpi .v em{font-size:13px;font-weight:500;color:var(--ink3);font-style:normal;margin-left:3px}
+  .kpi.hl{background:var(--blue);border-color:var(--blue)}
+  .kpi.hl .k{color:#c9d8f2} .kpi.hl .v{color:#fff} .kpi.hl .v em{color:#c9d8f2}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px 16px}
+  .card h2{font-size:13.5px;font-weight:600;margin-bottom:15px;color:var(--ink);
+    display:flex;align-items:center;gap:8px}
+  .card h2::before{content:"";width:3px;height:13px;background:var(--blue);border-radius:2px}
+  .bar-row{display:grid;grid-template-columns:92px 1fr 64px;align-items:center;gap:10px;margin-bottom:9px}
+  .bar-label{font-size:12px;color:var(--ink2);text-align:right;line-height:1.3}
+  .bar-track{height:15px;background:#f0f1f3;border-radius:3px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+  .bar-num{font-size:12px;font-weight:600;color:var(--ink);text-align:right}
+  .bar-num .bar-pct{font-size:10.5px;font-weight:400;color:var(--ink3);margin-left:5px}
+
+  .findings{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:8px;padding:16px 20px;margin-bottom:22px}
+  .findings h2{font-size:13.5px;font-weight:600;margin-bottom:11px}
+  .findings li{font-size:12.5px;color:var(--ink2);line-height:1.85;margin-left:17px;margin-bottom:2px}
+  .findings li b{color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12px}
+  thead th{background:#2f5597;color:#fff;font-weight:600;font-size:11.5px;
+    padding:10px 8px;text-align:left;white-space:nowrap;letter-spacing:.2px}
+  tbody td{padding:9px 8px;border-bottom:1px solid #f0f1f3;color:var(--ink2);vertical-align:middle}
+  tbody tr:hover td{background:#f8fafd}
+  tbody tr.dim td{color:#a8a8a8}
+  td.c{text-align:center} td.sm{font-size:11px;line-height:1.45}
+  td.nm{font-weight:600;color:var(--ink);font-size:12.5px;white-space:nowrap}
+  td.memo{font-size:10.5px;color:#8c8c8c;line-height:1.5}
+  .dot{font-size:13px} .dot.on{color:#2e7d32} .dot.off{color:#d0d0d0}
+  thead th.rk-h{background:#bf9000;text-align:center}
+  .foot{margin-top:16px;font-size:11.5px;color:var(--ink3);line-height:1.9}
+  .foot b{color:var(--ink2)}
+  @media (max-width:900px){
+    .kpis{grid-template-columns:repeat(3,1fr)} .grid{grid-template-columns:1fr}
+    body{padding:18px 12px 40px} table{font-size:11px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>校招简历看板 · <span>广州大学城 11.14 场</span></h1>
+    <div class="sub">数据来源：《招聘共享总表 · 校招简历》sheet，共 22 人<br>
+    评级 = 现场面试官手写评分（A+ / A / A- / B / C），"未面"为到场未进面试环节</div>
+  </div>
+  <div class="stamp">更新时间<br><b>2026-11-17</b></div>
+</header>
+
+<div class="kpis">
+  <div class="kpi hl"><div class="k">本场入表人数</div><div class="v">22<em>人</em></div></div>
+  <div class="kpi"><div class="k">已面试 / 未面</div><div class="v">20<em>/ 2</em></div></div>
+  <div class="kpi"><div class="k">A 档（A+/A/A-）</div><div class="v">10<em>人</em></div></div>
+  <div class="kpi"><div class="k">985 / 211</div><div class="v">3<em>人</em></div></div>
+  <div class="kpi"><div class="k">有社媒经验</div><div class="v">10<em>人</em></div></div>
+  <div class="kpi"><div class="k">有运营经验</div><div class="v">5<em>人</em></div></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>面试评级分布</h2>
+    <div class="bar-row">
+      <div class="bar-label">A+</div>
+      <div class="bar-track"><div class="bar-fill" style="width:13.6%;background:#C00000"></div></div>
+      <div class="bar-num">3<span class="bar-pct">13.6%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">A</div>
+      <div class="bar-track"><div class="bar-fill" style="width:22.7%;background:#217346"></div></div>
+      <div class="bar-num">5<span class="bar-pct">22.7%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">A-</div>
+      <div class="bar-track"><div class="bar-fill" style="width:9.1%;background:#217346"></div></div>
+      <div class="bar-num">2<span class="bar-pct">9.1%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">B</div>
+      <div class="bar-track"><div class="bar-fill" style="width:18.2%;background:#BF8F00"></div></div>
+      <div class="bar-num">4<span class="bar-pct">18.2%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">C</div>
+      <div class="bar-track"><div class="bar-fill" style="width:27.3%;background:#7F7F7F"></div></div>
+      <div class="bar-num">6<span class="bar-pct">27.3%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">未面</div>
+      <div class="bar-track"><div class="bar-fill" style="width:9.1%;background:#7F7F7F"></div></div>
+      <div class="bar-num">2<span class="bar-pct">9.1%</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>学校层次分布</h2>
+    <div class="bar-row">
+      <div class="bar-label">985/211</div>
+      <div class="bar-track"><div class="bar-fill" style="width:4.5%;background:#2f5597"></div></div>
+      <div class="bar-num">1<span class="bar-pct">4.5%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">211（非985）</div>
+      <div class="bar-track"><div class="bar-fill" style="width:9.1%;background:#2f5597"></div></div>
+      <div class="bar-num">2<span class="bar-pct">9.1%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">海外院校</div>
+      <div class="bar-track"><div class="bar-fill" style="width:13.6%;background:#2f5597"></div></div>
+      <div class="bar-num">3<span class="bar-pct">13.6%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">港校/合办</div>
+      <div class="bar-track"><div class="bar-fill" style="width:4.5%;background:#2f5597"></div></div>
+      <div class="bar-num">1<span class="bar-pct">4.5%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">双非公办</div>
+      <div class="bar-track"><div class="bar-fill" style="width:50.0%;background:#2f5597"></div></div>
+      <div class="bar-num">11<span class="bar-pct">50.0%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">民办/独立学院</div>
+      <div class="bar-track"><div class="bar-fill" style="width:13.6%;background:#2f5597"></div></div>
+      <div class="bar-num">3<span class="bar-pct">13.6%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">未注明</div>
+      <div class="bar-track"><div class="bar-fill" style="width:4.5%;background:#2f5597"></div></div>
+      <div class="bar-num">1<span class="bar-pct">4.5%</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>毕业时间分布</h2>
+    <div class="bar-row">
+      <div class="bar-label">2024 届</div>
+      <div class="bar-track"><div class="bar-fill" style="width:4.5%;background:#7a95c4"></div></div>
+      <div class="bar-num">1<span class="bar-pct">4.5%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">2025 届</div>
+      <div class="bar-track"><div class="bar-fill" style="width:4.5%;background:#7a95c4"></div></div>
+      <div class="bar-num">1<span class="bar-pct">4.5%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">2026 届</div>
+      <div class="bar-track"><div class="bar-fill" style="width:13.6%;background:#7a95c4"></div></div>
+      <div class="bar-num">3<span class="bar-pct">13.6%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">2027 届</div>
+      <div class="bar-track"><div class="bar-fill" style="width:63.6%;background:#7a95c4"></div></div>
+      <div class="bar-num">14<span class="bar-pct">63.6%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">在读</div>
+      <div class="bar-track"><div class="bar-fill" style="width:9.1%;background:#7a95c4"></div></div>
+      <div class="bar-num">2<span class="bar-pct">9.1%</span></div>
+    </div>
+<div class="bar-row">
+      <div class="bar-label">未注明</div>
+      <div class="bar-track"><div class="bar-fill" style="width:4.5%;background:#7a95c4"></div></div>
+      <div class="bar-num">1<span class="bar-pct">4.5%</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="findings">
+  <h2>先看这几条</h2>
+  <ul>
+    <li><b>本场共 22 人</b>：广州大学城11.14 线下校招，简历源为手写面试登记表 + 纸质简历翻拍，评级为现场面试官手写评分。</li><li><b>A+ 档 3 人：</b>郑欣荷、李秋淼、官婧怡；A 档 5 人、A- 档 2 人。</li><li><b>未面试 2 人：</b>朱靖岚、郝鹏程（到场但未进入面试环节），建议补面或转其他岗位。</li><li><b>已勾「是否面试」3 人：</b>官婧怡、邝贝玲、乌云格；其余 19 人仍为 ☐，面试完记得到表里打勾。</li><li><b>岗位方向明显错配：</b>叶阳蕾（未写（财务会计方向））、吴梓微（未写（财务方向））、段恋（舞蹈教师）、朱靖岚（环境技术/环境检测/固废处理）、郝鹏程（财务助理/会计助理），与社媒 / 运营岗不匹配，建议不推进。</li><li><b>实操情况：</b>有社媒经验 10 人、有运营经验 5 人，10 人两列都空（官婧怡、叶阳蕾、乌云格、吴梓微、段恋、卞朝铎、张嘉欣、冯芷稀、朱靖岚、郝鹏程）。</li>
+  </ul>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:36px">#</th><th style="width:70px">姓名</th><th style="width:120px">应聘岗位</th>
+      <th>学校（最高学历）</th><th style="width:104px">学校层次</th>
+      <th style="width:66px" class="c">毕业</th><th style="width:96px">专业</th>
+      <th class="rk-h" style="width:62px">评级</th>
+      <th style="width:48px" class="c">社媒</th><th style="width:48px" class="c">运营</th>
+      <th style="width:52px" class="c">面试</th>
+      <th style="width:250px">面试官备注（手写识别）</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+<td class="c">1</td>
+<td class="nm">郑欣荷</td>
+<td class="sm">社媒</td>
+<td class="sm">苏州城市学院</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2025 届</td>
+<td class="sm">新闻学</td>
+<td class="c"><b style="color:#C00000">A+</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c">☐</td>
+<td class="sm memo">手写「A+」；另有手写「5K：社媒可看看」；工作时长1年；女装品类+小红书/抖音双平台，匹配…</td>
+</tr>
+<tr>
+<td class="c">2</td>
+<td class="nm">李秋淼</td>
+<td class="sm">社媒</td>
+<td class="sm">广州大学</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">旅游管理</td>
+<td class="c"><b style="color:#C00000">A+</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c">☐</td>
+<td class="sm memo">手写「A+」；爆款内容能力最强；⚠️ 简历未写电话与邮箱，需现场补</td>
+</tr>
+<tr class="dim">
+<td class="c">3</td>
+<td class="nm">官婧怡</td>
+<td class="sm">数据分析师</td>
+<td class="sm">广东工业大学（硕士）/ 华南农业大学（本科）</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">环境科学 / 地理信息科学</td>
+<td class="c"><b style="color:#C00000">A+</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☑</td>
+<td class="sm memo">中共党员；大模型/RAG 数据清洗项目负责人（专利2项）、机器学习异常归因，Python/S…</td>
+</tr>
+<tr>
+<td class="c">4</td>
+<td class="nm">邝贝玲</td>
+<td class="sm">市场品牌公关/内容</td>
+<td class="sm">广州大学（硕士）/ 广西师范大学（本科）</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">新闻与传播 / 工商管理</td>
+<td class="c"><b style="color:#217346">A</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☑</td>
+<td class="sm memo">广州塔酷 市场品牌公关实习 2026.04-09；内容营销与品牌传播扎实，无电商店铺经验；本…</td>
+</tr>
+<tr>
+<td class="c">5</td>
+<td class="nm">任世群</td>
+<td class="sm">未写</td>
+<td class="sm">湖南理工大学</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">汉语言文学</td>
+<td class="c"><b style="color:#217346">A</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c">☐</td>
+<td class="sm memo">文案与账号从 0-1 能力可验证；另有线上英语教师经历</td>
+</tr>
+<tr class="dim">
+<td class="c">6</td>
+<td class="nm">叶阳蕾</td>
+<td class="sm">未写（财务会计方向）</td>
+<td class="sm">英国利兹大学（硕士）/ 广东金融学院（本科）</td>
+<td class="sm">海外院校</td>
+<td class="c sm">2026 届</td>
+<td class="sm">会计与金融 / 会计学</td>
+<td class="c"><b style="color:#217346">A</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">利兹商学院项目奖学金、GPA 前15%；京东物流结算实习（800+单/月）、致同审计实习；无…</td>
+</tr>
+<tr class="dim">
+<td class="c">7</td>
+<td class="nm">乌云格</td>
+<td class="sm">未写</td>
+<td class="sm">中山大学</td>
+<td class="sm">985/211</td>
+<td class="c sm">2026 届</td>
+<td class="sm">土木、水利与海洋工程</td>
+<td class="c"><b style="color:#217346">A</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☑</td>
+<td class="sm memo">985 本科；科研项目数据清洗200+条、ExceL/Python/Matlab；籍贯新疆（…</td>
+</tr>
+<tr class="dim">
+<td class="c">8</td>
+<td class="nm">吴梓微</td>
+<td class="sm">未写（财务方向）</td>
+<td class="sm">广州航海学院</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">财务管理</td>
+<td class="c"><b style="color:#217346">A</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">专业排名 2/81、三次国家励志奖学金；财务实习（凭证/台账/用友U8）；外贸单证助理；纯财…</td>
+</tr>
+<tr>
+<td class="c">9</td>
+<td class="nm">李婉宁</td>
+<td class="sm">新媒体运营</td>
+<td class="sm">香港教育大学（硕士）/ 广东财经大学华商学院（本科）</td>
+<td class="sm">港校/合办</td>
+<td class="c sm">2026 届</td>
+<td class="sm">新媒体与社交媒体 / 教育学</td>
+<td class="c"><b style="color:#217346">A-</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">手写补充电话 13025662663；融媒体中心+地产蓝V+企业号三段新媒体实习；内容与出镜…</td>
+</tr>
+<tr>
+<td class="c">10</td>
+<td class="nm">谢雨芯</td>
+<td class="sm">市场营销/HR</td>
+<td class="sm">南安普顿大学（硕士）/ 吉林财经大学（本科）</td>
+<td class="sm">海外院校</td>
+<td class="c sm">2027 届</td>
+<td class="sm">数字营销 / 人力资源管理</td>
+<td class="c"><b style="color:#217346">A-</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">数字营销硕士+内容运营实操，数据复盘意识好；可尽快到岗</td>
+</tr>
+<tr>
+<td class="c">11</td>
+<td class="nm">李瑞桐</td>
+<td class="sm">电商运营（校招）</td>
+<td class="sm">未写（简历仅标本科2027）</td>
+<td class="sm">未注明</td>
+<td class="c sm">2027 届</td>
+<td class="sm">产品设计</td>
+<td class="c"><b style="color:#BF8F00">B</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c">☐</td>
+<td class="sm memo">鞋服品类对口、拼多多店铺 0-1 有 GMV 结果、PS/AI/C4D 视觉强；可实习、20…</td>
+</tr>
+<tr class="dim">
+<td class="c">12</td>
+<td class="nm">段恋</td>
+<td class="sm">舞蹈教师</td>
+<td class="sm">华南师范大学</td>
+<td class="sm">211（非985）</td>
+<td class="c sm">在读</td>
+<td class="sm">舞蹈学（师范）</td>
+<td class="c"><b style="color:#BF8F00">B</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">群舞剧目编导（入选全国展演）、校园舞蹈大赛艺术指导；教学/编导能力强，无电商与新媒体实习</td>
+</tr>
+<tr>
+<td class="c">13</td>
+<td class="nm">卢嘉敏</td>
+<td class="sm">未写（电商方向）</td>
+<td class="sm">广东东软学院</td>
+<td class="sm">民办/独立学院</td>
+<td class="c sm">2027 届</td>
+<td class="sm">电子商务</td>
+<td class="c"><b style="color:#BF8F00">B</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c">☐</td>
+<td class="sm memo">GPA 3.55 专业前10%；电商专业+店铺实操，无得物；英语一般</td>
+</tr>
+<tr>
+<td class="c">14</td>
+<td class="nm">李翠萍</td>
+<td class="sm">内容运营</td>
+<td class="sm">嘉应学院</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">新闻学</td>
+<td class="c"><b style="color:#BF8F00">B</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">新闻学，文案/短视频创作有赛事背书；无企业实习，无电商</td>
+</tr>
+<tr>
+<td class="c">15</td>
+<td class="nm">赖楚莹</td>
+<td class="sm">品牌传播/策划</td>
+<td class="sm">广州大学</td>
+<td class="sm">双非公办</td>
+<td class="c sm">未注明</td>
+<td class="sm">市场营销</td>
+<td class="c"><b style="color:#7F7F7F">C</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">营销策划+PR文案方向；无店铺/商品运营；学历未注明</td>
+</tr>
+<tr class="dim">
+<td class="c">16</td>
+<td class="nm">卞朝铎</td>
+<td class="sm">未写（商业分析方向）</td>
+<td class="sm">马来西亚理科大学（硕士）/ 天津财经大学珠江学院（本科）</td>
+<td class="sm">海外院校</td>
+<td class="c sm">2027 届</td>
+<td class="sm">商业分析（统计学）/ 税收学</td>
+<td class="c"><b style="color:#7F7F7F">C</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">手写薪资「12K-15K」；物流营销ToB、财务、翻译项目助理三段实习；有考研教培自媒体创业…</td>
+</tr>
+<tr>
+<td class="c">17</td>
+<td class="nm">赖慧婵</td>
+<td class="sm">助理岗</td>
+<td class="sm">电子科技大学中山学院</td>
+<td class="sm">民办/独立学院</td>
+<td class="c sm">2024 届</td>
+<td class="sm">国际经济与贸易</td>
+<td class="c"><b style="color:#7F7F7F">C</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">2024.01-2026.08 任高校辅导员（会务统筹 50+ 场、公文台账）；已毕业非应届…</td>
+</tr>
+<tr>
+<td class="c">18</td>
+<td class="nm">李雪燕</td>
+<td class="sm">未写（电商方向）</td>
+<td class="sm">广东东软学院</td>
+<td class="sm">民办/独立学院</td>
+<td class="c sm">在读</td>
+<td class="sm">电子商务</td>
+<td class="c"><b style="color:#7F7F7F">C</b></td>
+<td class="c"><span class="dot on">●</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">电商专业 GPA 3.91 前5%；实操弱（销售/校园账号），无店铺运营</td>
+</tr>
+<tr class="dim">
+<td class="c">19</td>
+<td class="nm">张嘉欣</td>
+<td class="sm">运营管培生</td>
+<td class="sm">五邑大学</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">国际经济与贸易</td>
+<td class="c"><b style="color:#7F7F7F">C</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">保险综合管理实习（台账/会议/发票/人事辅助）；三创赛队长；无电商实操</td>
+</tr>
+<tr class="dim">
+<td class="c">20</td>
+<td class="nm">冯芷稀</td>
+<td class="sm">未写（国贸）</td>
+<td class="sm">五邑大学</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">国际经济与贸易</td>
+<td class="c"><b style="color:#7F7F7F">C</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">办公室数据校验/台账、外贸实训、亚马逊跟卖项目（信息核对）；无电商运营结果</td>
+</tr>
+<tr class="dim">
+<td class="c">21</td>
+<td class="nm">朱靖岚</td>
+<td class="sm">环境技术/环境检测/固废处理</td>
+<td class="sm">华南师范大学（硕士）/ 仲恺农业工程学院（本科）</td>
+<td class="sm">211（非985）</td>
+<td class="c sm">2027 届</td>
+<td class="sm">环境工程 / 环境科学</td>
+<td class="c"><b style="color:#7F7F7F">未面</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">纸面手写「帮投、未面试」；环评工程师助理实习，专业方向为环境检测，与社媒/运营无关</td>
+</tr>
+<tr class="dim">
+<td class="c">22</td>
+<td class="nm">郝鹏程</td>
+<td class="sm">财务助理/会计助理</td>
+<td class="sm">广州航海学院</td>
+<td class="sm">双非公办</td>
+<td class="c sm">2027 届</td>
+<td class="sm">金融学</td>
+<td class="c"><b style="color:#7F7F7F">未面</b></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c"><span class="dot off">○</span></td>
+<td class="c">☐</td>
+<td class="sm memo">纸面手写「投简历、未面试」；初级会计/银行/基金从业证；川财证券财务合规实习；纯财务方向</td>
+</tr>
+  </tbody>
+</table>
+
+<div class="foot">
+  <b>口径：</b>「社媒经验」= 平台账号 / 内容 / 达人投放类实操；「运营经验」= 店铺 / 商品 / 品类 / 直播 / 产品运营类实操；校内项目、课程演练不计。<br>
+  <b>评级：</b>现场面试官手写填写，识别结果已逐条回看原件；「未面」= 到场但未进入面试。评级与备注仅作初筛参考，最终以用人部门复面结论为准。<br>
+  <b>数据同步：</b>本页与《招聘共享总表 · 校招简历》sheet 同源，表内改动后重跑 <code>gen_xc_dashboard.py</code> 即刷新。
+</div>
+
+</div>
+</body>
+</html>
