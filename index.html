@@ -137,7 +137,7 @@
         loading.classList.add('hide');
       }
     });
-    f.src = PANELS[key].file;
+    f.src = PANELS[key].file + '?v=' + Date.now();  // 每次打开强制拉最新版，绕开 CDN/浏览器 10 分钟缓存
     stage.appendChild(f);
     frames[key] = f;
     return f;
