@@ -215,6 +215,9 @@ function drawSummary(){
   var fd=fDept.value, kw=document.getElementById("fName").value.trim();
   var rows = D.summary.filter(function(x){
     return (!fd||x.dept===fd) && (!kw||x.name.indexOf(kw)>=0);
+  }).sort(function(a,b){
+    if(a.dept!==b.dept) return String(a.dept).localeCompare(String(b.dept),"zh");
+    return String(a.name).localeCompare(String(b.name),"zh");
   });
   document.getElementById("sumCnt").textContent = "共 "+rows.length+" 人";
   sortTbl(document.getElementById("sumTbl"), sumCols, rows.map(function(x){
