@@ -348,6 +348,9 @@ if(D.anomaly){
       if(dv==="1"&&!isDone) return false;
       if(kw&&x.name.indexOf(kw)<0) return false;
       return true;
+    }).sort(function(a,b){
+      if(a.name!==b.name) return a.name.localeCompare(b.name,"zh");
+      return (a.type||"").localeCompare(b.type||"","zh");
     });
     document.getElementById("aCnt").textContent="共 "+rows.length+" 条 · 待处理 "+pending;
     var tbl=document.getElementById("aTbl");
