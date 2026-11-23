@@ -60,6 +60,31 @@
     100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}
   }
 
+  /* ---------- 周报周期条 ---------- */
+  .weekbar{
+    flex:0 0 auto;display:none;align-items:center;gap:10px;
+    background:#fff;border-bottom:1px solid #e6e9f1;padding:9px 18px;
+    box-shadow:0 1px 3px rgba(20,28,48,.05);position:relative;z-index:9;
+  }
+  .weekbar.on{display:flex}
+  .wb-label{font-size:12px;color:#6b7280;font-weight:600;white-space:nowrap}
+  .wb-label::before{content:"";display:inline-block;width:3px;height:13px;background:#3b6fe0;border-radius:2px;margin-right:8px;vertical-align:-2px}
+  .weekbar select{
+    font-family:inherit;font-size:13px;font-weight:600;color:#1f2a44;
+    background:#f4f6fb;border:1px solid #dfe4ef;border-radius:8px;
+    padding:7px 10px;cursor:pointer;min-width:200px;
+  }
+  .wb-btn{
+    font-family:inherit;font-size:12.5px;font-weight:600;color:#3b6fe0;
+    background:#eef3ff;border:1px solid #d8e3ff;border-radius:8px;
+    padding:7px 15px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s;
+  }
+  .wb-btn:hover:not(:disabled){background:#e0ebff}
+  .wb-btn.active{background:#3b6fe0;color:#fff;border-color:#3b6fe0}
+  .wb-btn:disabled{opacity:.4;cursor:not-allowed}
+  .wb-cur{margin-left:auto;font-size:12px;color:#8a8a94;white-space:nowrap}
+  .wb-cur b{color:#1f2a44;font-weight:600}
+
   /* ---------- 内容区 ---------- */
   .stage{flex:1 1 auto;min-height:0;position:relative;background:#f4f5f8}
   .stage iframe{
@@ -82,6 +107,10 @@
     .brand .txt{font-size:13.5px}
     .tab{font-size:12.5px;padding:7px 11px}
     .meta{display:none}
+    .weekbar{padding:8px 12px;gap:7px;flex-wrap:wrap}
+    .wb-label,.wb-cur{display:none}
+    .weekbar select{min-width:150px;flex:1 1 auto}
+    .wb-btn{padding:6px 12px}
   }
 </style>
 </head>
@@ -105,6 +134,14 @@
   </div>
 </header>
 
+<div class="weekbar" id="weekbar">
+  <span class="wb-label">数据周期</span>
+  <select id="weekSel" aria-label="选择周报周期"></select>
+  <button class="wb-btn" id="btnPrev" type="button">上周</button>
+  <button class="wb-btn" id="btnThis" type="button">本周</button>
+  <span class="wb-cur" id="weekCur"></span>
+</div>
+
 <main class="stage" id="stage">
   <div class="loading" id="loading"><div class="spin"></div>加载中…</div>
 </main>
@@ -118,12 +155,84 @@
     xc     : {file:'xc.html',      title:'校招简历看板'}
   };
 
+  /* WEEKS_DATA_START */
+  var WEEKS = [{"start": "2026-11-23", "end": "2026-11-29", "file": "weekly_20261123.html"}, {"start": "2026-11-16", "end": "2026-11-22", "file": "weekly_20261116.html"}, {"start": "2026-11-09", "end": "2026-11-15", "file": "weekly_20261109.html"}, {"start": "2026-11-02", "end": "2026-11-08", "file": "weekly_20261102.html"}];
+  /* WEEKS_DATA_END */
+
   var stage   = document.getElementById('stage');
   var loading = document.getElementById('loading');
   var tabs    = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var weekbar = document.getElementById('weekbar');
+  var weekSel = document.getElementById('weekSel');
+  var weekCur = document.getElementById('weekCur');
+  var btnPrev = document.getElementById('btnPrev');
+  var btnThis = document.getElementById('btnThis');
   var frames  = {};
   var current = null;
   var loadingTimer = null;
+
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  function iso(d){ return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+  function mondayOf(d){
+    var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var w = x.getDay() || 7;                 // 周日按 7 算
+    x.setDate(x.getDate() - (w - 1));
+    return x;
+  }
+  var THIS_MON = iso(mondayOf(new Date()));
+  var PREV_MON = (function(){ var d = mondayOf(new Date()); d.setDate(d.getDate() - 7); return iso(d); })();
+
+  function findWeek(s){
+    for (var i=0;i<WEEKS.length;i++) if (WEEKS[i].start === s) return WEEKS[i];
+    return null;
+  }
+  function fmt(s){ var p = s.split('-'); return p[0]+'.'+p[1]+'.'+p[2]; }
+  function rangeText(w){ return fmt(w.start) + ' - ' + fmt(w.end); }
+
+  // 点开周报默认显示本周；本周尚未生成则回退到最新一期
+  var curWeek = findWeek(THIS_MON) || WEEKS[0] || null;
+
+  var selBuilt = false;
+  function buildSelect(){
+    if (selBuilt || !WEEKS.length) return;
+    var html = '';
+    for (var i=0;i<WEEKS.length;i++){
+      var w = WEEKS[i];
+      var tag = w.start === THIS_MON ? '（本周）' : (w.start === PREV_MON ? '（上周）' : '');
+      html += '<option value="' + w.start + '">' + rangeText(w) + tag + '</option>';
+    }
+    weekSel.innerHTML = html;
+    selBuilt = true;
+  }
+
+  function renderWeekbar(){
+    if (!WEEKS.length){ weekbar.classList.remove('on'); return; }
+    buildSelect();
+    weekSel.value = curWeek ? curWeek.start : '';
+    var wp = findWeek(PREV_MON), wt = findWeek(THIS_MON);
+    btnPrev.disabled = !wp; btnPrev.title = wp ? '切到上周 ' + rangeText(wp) : '上周周报尚未生成';
+    btnThis.disabled = !wt; btnThis.title = wt ? '切到本周 ' + rangeText(wt) : '本周周报尚未生成';
+    btnPrev.classList.toggle('active', !!curWeek && curWeek.start === PREV_MON);
+    btnThis.classList.toggle('active', !!curWeek && curWeek.start === THIS_MON);
+    weekCur.innerHTML = curWeek
+      ? '当前：<b>' + rangeText(curWeek) + '</b>' +
+        (curWeek.start === THIS_MON ? ' · 本周' : (curWeek.start === PREV_MON ? ' · 上周' : ''))
+      : '';
+  }
+
+  function setWeek(w){
+    if (!w) return;
+    curWeek = w;
+    var f = frames.weekly;
+    if (f){
+      loading.classList.remove('hide');
+      clearTimeout(loadingTimer);
+      loadingTimer = setTimeout(function(){ loading.classList.add('hide'); }, 8000);
+      f.dataset.ready = '0';
+      f.src = w.file + '?v=' + Date.now();
+    }
+    renderWeekbar();
+  }
 
   function makeFrame(key){
     if (frames[key]) return frames[key];
@@ -132,12 +241,10 @@
     f.dataset.key = key;
     f.addEventListener('load', function(){
       f.dataset.ready = '1';
-      if (current === key) {
-        clearTimeout(loadingTimer);
-        loading.classList.add('hide');
-      }
+      if (current === key) { clearTimeout(loadingTimer); loading.classList.add('hide'); }
     });
-    f.src = PANELS[key].file + '?v=' + Date.now();  // 每次打开强制拉最新版，绕开 CDN/浏览器 10 分钟缓存
+    var src = (key === 'weekly' && curWeek) ? curWeek.file : PANELS[key].file;
+    f.src = src + '?v=' + Date.now();  // 强制拉最新版，绕开 CDN/浏览器缓存
     stage.appendChild(f);
     frames[key] = f;
     return f;
@@ -151,7 +258,6 @@
     current = key;
 
     if (!existed) {
-      // 首次进入该板块 → 显示加载态，最多等 8 秒
       loading.classList.remove('hide');
       clearTimeout(loadingTimer);
       loadingTimer = setTimeout(function(){ loading.classList.add('hide'); }, 8000);
@@ -166,6 +272,8 @@
     if (frame.dataset.ready === '1') loading.classList.add('hide');
 
     tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.key === key); });
+    weekbar.classList.toggle('on', key === 'weekly' && WEEKS.length > 0);
+    if (key === 'weekly') renderWeekbar();
     document.title = PANELS[key].title + ' · 十克招聘工作台';
 
     if (push && history.replaceState) history.replaceState(null, '', '#' + key);
@@ -174,6 +282,9 @@
   tabs.forEach(function(t){
     t.addEventListener('click', function(){ activate(t.dataset.key, true); });
   });
+  weekSel.addEventListener('change', function(){ setWeek(findWeek(weekSel.value)); });
+  btnPrev.addEventListener('click', function(){ setWeek(findWeek(PREV_MON)); });
+  btnThis.addEventListener('click', function(){ setWeek(findWeek(THIS_MON)); });
 
   window.addEventListener('hashchange', function(){
     activate((location.hash || '').replace('#',''), false);
