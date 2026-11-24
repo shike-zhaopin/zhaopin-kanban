@@ -37,6 +37,20 @@ body{font-family:"PingFang SC","Microsoft YaHei",-apple-system,"Helvetica Neue",
 .hblink:hover{background:rgba(255,255,255,.26)}
 .dotbadge{display:inline-block;min-width:16px;height:16px;line-height:16px;padding:0 4px;margin-left:5px;
   background:#D93025;color:#fff;border-radius:9px;font-size:10.5px;font-weight:700;text-align:center;vertical-align:middle}
+/* 待办二次确认弹窗 */
+.mask{position:fixed;inset:0;background:rgba(8,40,33,.44);display:none;align-items:center;justify-content:center;
+  z-index:120;padding:20px}
+.mask.on{display:flex}
+.mbox{background:#fff;border-radius:12px;width:100%;max-width:380px;padding:18px 20px 14px;
+  box-shadow:0 20px 60px rgba(0,0,0,.26)}
+.mtitle{font-size:14.5px;font-weight:700;color:var(--dark);margin-bottom:9px}
+.mbody{font-size:12.5px;color:#4A5A54;line-height:1.7;margin-bottom:16px}
+.mbody b{color:var(--ink)}
+.mfoot{display:flex;gap:8px;justify-content:flex-end}
+.mbtn{border:1px solid var(--line);background:#fff;color:var(--ink2);font-size:12.5px;font-weight:600;
+  padding:7px 16px;border-radius:8px;cursor:pointer;font-family:inherit}
+.mbtn.primary{background:var(--dark);border-color:var(--dark);color:#fff}
+.mbtn:hover{opacity:.88}
 .cards{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:12px}
 .card{background:var(--page);border:1px solid var(--line);border-radius:8px;padding:11px 13px}
 .card .n{font-size:21px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
@@ -199,10 +213,27 @@ footer a{color:var(--mid)}
         <option value="90" selected>90 天内</option>
         <option value="0">全部</option>
       </select>
+      <select id="tdState">
+        <option value="todo" selected>待办</option>
+        <option value="done">已处理</option>
+        <option value="all">全部</option>
+      </select>
       <input id="tdKw" placeholder="搜索姓名 / 部门…">
       <span class="cnt" id="tdCnt"></span>
     </div>
     <div class="tblwrap"><table id="tdTbl"></table></div>
+
+    <!-- 勾选二次确认 -->
+    <div class="mask" id="tdMask">
+      <div class="mbox">
+        <div class="mtitle">确认这条待办已完成？</div>
+        <div class="mbody" id="tdMBody"></div>
+        <div class="mfoot">
+          <button class="mbtn" id="tdMno">取消</button>
+          <button class="mbtn primary" id="tdMok">确定</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   </div><!-- /#p-att 考勤 -->
@@ -642,7 +673,7 @@ if(D.anomaly){
 
     /* 体检：满 EXAM_MIN 年该做体检；未安排 → 到期日 ≤ 90 天内都提示
        （已过到期日 = 过时 → 显示「即刻」；还没到但 ≤90 天 → 显示日期 +（即将逾期）） */
-    if((p.exam||"")==="未安排"){
+    if((p.exam||"")==="未安排" && target !== EXAM_MIN){   /* target=满2年时，周年那条已提示体检，不重复 */
       var due = addYears(hire, EXAM_MIN);
       var dDue = daysBetween(TODAY, due);
       if(dDue <= 90){
@@ -684,28 +715,66 @@ if(D.anomaly){
   }
 
   var cols=[{t:"已完成"},{t:"类型"},{t:"姓名"},{t:"部门"},{t:"已满年限"},{t:"安排日期"},{t:"剩余天数"},{t:"应做事项"}];
+  var ORDER = {"周年":0,"体检":1,"年假":2,"病假":3};   /* 周年优先 → 体检 → 年假 */
+  var tdState = document.getElementById("tdState");
+
+  /* 勾选 → 二次确认弹窗；确定后置为已处理、从「待办」视图消失 */
+  var mask=document.getElementById("tdMask"),
+      mbody=document.getElementById("tdMBody"),
+      pendItem=null, pendCb=null;
+  function askDone(x, cb){
+    pendItem=x; pendCb=cb;
+    mbody.innerHTML = "<b>"+esc(x.name)+"</b>　"+(x.dept?esc(x.dept)+"　":"")+
+      "<span class='pill "+(TYPE_PILL[x.k]||"gry")+"'>"+esc(x.k)+"</span><br>"+
+      esc(x.k==="周年" ? (x.label||x.title) : x.title)+
+      "<br><span style='color:#8A9691;font-size:12px'>确定后这条不再显示；如需找回，把上方状态切到「已处理」。</span>";
+    mask.classList.add("on");
+  }
+  function closeMask(uncheck){
+    mask.classList.remove("on");
+    if(uncheck && pendCb) pendCb.checked = false;
+    pendItem=null; pendCb=null;
+  }
+  document.getElementById("tdMok").addEventListener("click", function(){
+    if(pendItem){ done[pendItem.id]=1; saveDone(); }
+    closeMask(false); draw(); badge();
+  });
+  document.getElementById("tdMno").addEventListener("click", function(){ closeMask(true); });
+  mask.addEventListener("click", function(e){ if(e.target===mask) closeMask(true); });
 
   function draw(){
-    var ty=tdType.value, rg=+tdRange.value, kw=(tdKw.value||"").trim();
+    var ty=tdType.value, rg=+tdRange.value, kw=(tdKw.value||"").trim(), st=tdState.value;
     var rows = items.filter(function(x){
       if(ty && x.k!==ty) return false;
+      if(st==="todo" && done[x.id]) return false;
+      if(st==="done" && !done[x.id]) return false;
       if(rg && (x.k==="周年" || x.k==="年假") && x.days!=null && x.days>=0 && x.days>rg) return false;
       if(kw && (x.name+" "+x.dept).indexOf(kw)<0) return false;
       return true;
     }).sort(function(a,b){
+      var oa=(ORDER[a.k]!==undefined?ORDER[a.k]:9), ob=(ORDER[b.k]!==undefined?ORDER[b.k]:9);
+      if(oa!==ob) return oa-ob;
       var da=a.days==null?99999:a.days, db=b.days==null?99999:b.days;
       if(da!==db) return da-db;
       if(a.k==="年假" && b.k==="年假") return (b.annual||0)-(a.annual||0);  /* 余额多的先提醒 */
       return String(a.name).localeCompare(String(b.name),"zh");
     });
 
+    /* 统计按当前筛选（类型/时间范围/搜索）口径，不含状态筛选 */
+    var base = items.filter(function(x){
+      if(ty && x.k!==ty) return false;
+      if(rg && (x.k==="周年" || x.k==="年假") && x.days!=null && x.days>=0 && x.days>rg) return false;
+      if(kw && (x.name+" "+x.dept).indexOf(kw)<0) return false;
+      return true;
+    });
+    var pend = base.filter(function(x){return !done[x.id]}).length;
     document.getElementById("tdCnt").textContent =
-      "共 "+rows.length+" 项（未完成 "+rows.filter(function(x){return !done[x.id]}).length+"）";
-    sortTbl(document.getElementById("tdTbl"), cols, rows.map(function(x){
+      "共 "+rows.length+" 项 · 待办 "+pend+" · 已处理 "+(base.length-pend);
+    sortTbl(document.getElementById("tdTbl"), cols, rows.map(function(x,i){
       return [done[x.id]?"1":"", x.k, x.name, x.dept||"", (x.years!=null? "满 "+x.years+" 年":"–"),
-              x.date||"–", x.days, (x.k==="周年"? (x.label||x.title) : x.title)];
+              x.date||"–", x.days, (x.k==="周年"? (x.label||x.title) : x.title), String(i)];
     }), function(r){
-      return "<tr><td><input type='checkbox' style='cursor:pointer' "+(r[0]?"checked":"")+"></td>"+
+      return "<tr><td><input type='checkbox' data-i='"+r[8]+"' style='cursor:pointer' "+(r[0]?"checked":"")+"></td>"+
         "<td><span class='pill "+(TYPE_PILL[r[1]]||"gry")+"'>"+esc(r[1])+"</span></td>"+
         "<td class='lft'><b>"+esc(r[2])+"</b></td><td>"+esc(r[3])+"</td><td>"+esc(r[4])+"</td>"+
         "<td class='gry'>"+esc(r[5])+"</td>"+
@@ -713,13 +782,12 @@ if(D.anomaly){
         "<td class='lft reason'>"+esc(r[7])+"</td></tr>";
     });
 
-    document.querySelectorAll("#tdTbl tbody tr").forEach(function(tr, i){
-      var cb = tr.querySelector("input[type=checkbox]");
-      if(!cb) return;
+    document.querySelectorAll("#tdTbl tbody tr input[type=checkbox]").forEach(function(cb){
       cb.addEventListener("change", function(){
-        var id = rows[i].id;
-        if(cb.checked) done[id] = 1; else delete done[id];
-        saveDone(); draw(); badge();
+        var x = rows[+cb.getAttribute("data-i")];
+        if(!x){ return; }
+        if(cb.checked){ askDone(x, cb); }     /* 勾上 → 先弹确认 */
+        else{ delete done[x.id]; saveDone(); draw(); badge(); }
       });
     });
   }
@@ -744,7 +812,7 @@ if(D.anomaly){
     "体检：满 "+EXAM_MIN+" 年且「未安排」→ 单独提醒。病假当年累计满 "+(T.sick_limit||20)+" 天 → 提醒。"+
     "<b>年假余额（当年）</b>：12 月 31 日到期，未休完的一律列出并显示距清零天数（免管名单已剔除）。";
 
-  [tdType, tdRange].forEach(function(el){ el.addEventListener("change", draw); });
+  [tdType, tdRange, tdState].forEach(function(el){ el.addEventListener("change", draw); });
   tdKw.addEventListener("input", draw);
   draw(); badge();
 })();
