@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>十克 · 公司座次表</title>
+<title>十克 · 公司座次表（平面图）</title>
 <style>
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   :root{
@@ -18,94 +18,143 @@
       var(--bg);
     color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    font-size:14px;line-height:1.5;
-    -webkit-font-smoothing:antialiased;
+    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:1440px;margin:0 auto;padding:26px 24px 70px}
 
-  /* ---------- header ---------- */
-  header.hd{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  header.hd{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
   .hd h1{margin:0;font-size:30px;letter-spacing:-.5px;font-weight:700}
   .hd h1 i{font-style:normal;color:var(--accent)}
   .hd .sub{font-size:13px;color:var(--sub);margin-top:4px}
   .hd .rt{margin-left:auto;font-size:12px;color:var(--mut);text-align:right;line-height:1.7}
   .hd .rt b{color:var(--sub);font-weight:600}
 
-  /* ---------- stats ---------- */
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
-  .st{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:12px;margin-bottom:16px}
+  .st{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 15px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
   .st .k{font-size:12px;color:var(--mut);letter-spacing:.3px}
-  .st .v{font-size:26px;font-weight:700;letter-spacing:-.5px;margin-top:2px}
+  .st .v{font-size:25px;font-weight:700;letter-spacing:-.5px;margin-top:2px}
   .st .v small{font-size:12px;font-weight:500;color:var(--mut);margin-left:4px;letter-spacing:0}
   .st.hi .v{color:var(--accent-d)}
   .st.warn .v{color:#D9822B}
 
-  /* ---------- toolbar ---------- */
-  .bar-wrap{position:sticky;top:0;z-index:30;background:rgba(244,247,250,.86);backdrop-filter:blur(12px);
-    padding:10px 0 12px;margin-bottom:22px;border-bottom:1px solid rgba(233,239,245,.9)}
+  .bar-wrap{position:sticky;top:0;z-index:30;background:rgba(244,247,250,.88);backdrop-filter:blur(12px);
+    padding:10px 0 12px;margin-bottom:20px;border-bottom:1px solid rgba(233,239,245,.9)}
   .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .search{position:relative;flex:1 1 260px;max-width:340px}
-  .search input{width:100%;padding:10px 14px 10px 36px;border:1px solid var(--line);border-radius:12px;
+  .search{position:relative;flex:1 1 240px;max-width:320px}
+  .search input{width:100%;padding:9px 14px 9px 35px;border:1px solid var(--line);border-radius:12px;
     background:#fff;font:inherit;font-size:13.5px;color:var(--ink);outline:none;transition:.18s}
   .search input:focus{border-color:#A9DEF0;box-shadow:0 0 0 3px rgba(0,179,229,.12)}
   .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.45}
   .chips{display:flex;gap:6px;flex-wrap:wrap}
-  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font:inherit;font-size:12.5px;
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;font:inherit;font-size:12.5px;
     color:var(--sub);cursor:pointer;display:flex;align-items:center;gap:6px;transition:.15s}
   .chip:hover{border-color:#CFE3EF;color:var(--ink)}
   .chip.on{background:#E9F8FD;border-color:#A9DEF0;color:#04708C;font-weight:600}
   .chip .cd{width:8px;height:8px;border-radius:50%}
-  .toggles{margin-left:auto;display:flex;gap:8px;align-items:center}
-  .tg{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font:inherit;font-size:12.5px;
+  .toggles{margin-left:auto;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+  .tg{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;
     color:var(--sub);cursor:pointer;transition:.15s;white-space:nowrap}
   .tg.on{background:#0F172A;color:#fff;border-color:#0F172A}
-  .fnav{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .seg{display:flex;background:#E9EFF5;border-radius:10px;padding:3px;gap:2px}
+  .seg button{border:0;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:#64748B;
+    padding:5px 13px;border-radius:8px;cursor:pointer;transition:.15s;white-space:nowrap}
+  .seg button.on{background:#fff;color:#0F172A;box-shadow:0 1px 3px rgba(16,24,40,.12)}
+  .fnav{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
   .fnav a{font-size:11.5px;color:#5B6B7C;background:#fff;border:1px solid var(--line);border-radius:8px;
     padding:4px 10px;text-decoration:none;transition:.15s}
   .fnav a:hover{border-color:#A9DEF0;color:#04708C;background:#F3FBFE}
   .fnav a b{color:#0F172A;font-weight:600;margin-right:4px}
 
-  /* ---------- layout ---------- */
-  .cols{display:grid;grid-template-columns:minmax(0,1fr) 318px;gap:24px;align-items:start}
-  aside{position:sticky;top:74px;display:flex;flex-direction:column;gap:14px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 16px 18px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
-  .card h3{margin:0 0 12px;font-size:13px;color:var(--sub);font-weight:600;letter-spacing:.4px;display:flex;align-items:center;gap:7px}
+  .cols{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;align-items:start}
+  aside{position:sticky;top:74px;display:flex;flex-direction:column;gap:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px 15px 17px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .card h3{margin:0 0 11px;font-size:13px;color:var(--sub);font-weight:600;letter-spacing:.4px}
   .card h3 b{color:var(--ink);font-weight:700}
 
-  /* ---------- floor ---------- */
-  .floor{margin-bottom:38px;scroll-margin-top:80px}
-  .fh{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-  .fh .fn{font-size:21px;font-weight:700;letter-spacing:-.3px}
+  .floor{margin-bottom:34px;scroll-margin-top:80px}
+  .fh{display:flex;align-items:center;gap:10px;margin-bottom:11px;flex-wrap:wrap}
+  .fh .fn{font-size:20px;font-weight:700;letter-spacing:-.3px}
   .fh .ft{font-size:12px;color:#7C8FA0;background:#EDF4F9;padding:3px 10px;border-radius:999px}
   .fh .fc{margin-left:auto;font-size:12px;color:var(--mut)}
   .fh .fc b{color:#41556A;font-weight:600}
   .fh .gap{color:#D9822B;font-weight:600}
+
+  /* ---------- 平面图 ---------- */
+  .planbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:8px 10px;
+    box-shadow:0 1px 2px rgba(16,24,40,.05);overflow:hidden}
+  .plansvg{width:100%;height:auto;display:block}
+  .wall{fill:#fff;stroke:#3A5670;stroke-width:2.4}
+  .room{fill:#F5F8FA;stroke:#CBD8E2;stroke-width:1.1}
+  .room.sm{fill:#F8FAFC}
+  .rlabel{font-size:11.5px;fill:#5C7186;text-anchor:middle;font-weight:600}
+  .rsub{font-size:9.5px;fill:#9BAAB8;text-anchor:middle}
+  .corridor{fill:#FBFDFE;stroke:#E2EAF1;stroke-width:1;stroke-dasharray:7 6}
+  .clabel{font-size:10px;fill:#C3CFDA;text-anchor:middle;letter-spacing:6px}
+  .desk{fill:#FFF9E8;stroke:#E7D3A0;stroke-width:1.2}
+  .dlabel{font-size:11px;fill:#8B7440;text-anchor:middle;font-weight:600}
+  .dline{stroke:#EBDCB4;stroke-width:1;stroke-dasharray:3 3}
+  .table{fill:#F4F2EA;stroke:#D5D0C0;stroke-width:1.1}
+  .pbody{fill:#fff;stroke:#D8E3EC;stroke-width:1}
+  .pbar{fill:var(--c,#C7D3DE)}
+  .pseat text{font-size:12px;fill:#1F2937;text-anchor:middle;font-weight:600}
+  .pseat{cursor:pointer;transition:opacity .18s}
+  .pseat.empty .pbody{stroke-dasharray:4 3;fill:#FAFCFE}
+  .pseat.empty text{fill:#AEBECC;font-weight:500;font-size:11px}
+  .pseat.ghost .pbody{fill:#fff;stroke:#CBD8E2;stroke-width:1.1}
+  .pseat.hit .pbody{stroke:#EFA92F;stroke-width:2.2}
+  .pseat.dim{opacity:.13}
+  .door-gap{fill:#fff}
+  .door-arc{fill:none;stroke:#8FA3B5;stroke-width:1}
+  .arw{stroke:#7E93A6;stroke-width:1.6;fill:none}
+  .arwhead{fill:#7E93A6}
+  .alabel{font-size:11px;fill:#7E93A6;font-weight:600}
+  .tlabel{font-size:11px;fill:#A8B6C2}
+
+  .legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);
+    border-radius:14px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#5C7186}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .legend i{display:inline-block;width:22px;height:13px;border-radius:7px;border:1px solid #D8E3EC;background:#fff}
+  .legend i.desk{background:#FFF9E8;border-color:#E7D3A0;border-radius:3px}
+  .legend i.room{background:#F5F8FA;border-color:#CBD8E2;border-radius:3px}
+  .legend i.tbl{background:#F4F2EA;border-color:#D5D0C0;border-radius:4px;width:18px}
+  .legend i.emp{background:#FAFCFE;border-style:dashed;border-color:#CFDBE6}
+  .zoombtn{margin-left:8px;border:1px solid var(--line);background:#fff;color:#5B6B7C;font:inherit;font-size:11.5px;
+    padding:3px 10px;border-radius:8px;cursor:pointer;transition:.15s}
+  .zoombtn:hover{border-color:#A9DEF0;color:#04708C;background:#F3FBFE}
+  .zoom{position:fixed;inset:0;background:#F7FAFC;z-index:75;display:none;flex-direction:column}
+  .zoom.on{display:flex}
+  .zoomhd{display:flex;align-items:center;gap:12px;padding:12px 20px;background:#fff;border-bottom:1px solid var(--line)}
+  .zoomhd b{font-size:15px}
+  .zoomhd .zt{font-size:12px;color:var(--mut)}
+  .zoomhd button{margin-left:auto;border:1px solid var(--line);background:#fff;font:inherit;font-size:12.5px;
+    padding:6px 14px;border-radius:9px;cursor:pointer;color:#41556A}
+  .zoombody{flex:1;overflow:auto;padding:16px 20px 24px}
+  .zoombody svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:14px}
+
+  /* ---------- 卡片视图 ---------- */
   .islands{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));gap:14px}
   .island{background:#fff;border:1px solid var(--line);border-radius:18px;padding:13px 13px 14px;
-    box-shadow:0 1px 2px rgba(16,24,40,.04);transition:.18s;container-type:inline-size}
+    box-shadow:0 1px 2px rgba(16,24,40,.04);transition:.18s;container-type:inline-size;display:flex;flex-direction:column}
   .island:hover{box-shadow:0 6px 20px rgba(16,24,40,.07);border-color:#DCE7F0}
-  .ih{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .ih{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex:0 0 auto}
   .ih .ix{font-size:12.5px;font-weight:600;color:#41556A}
   .ih .ic{font-size:11px;color:var(--mut);background:#F5F9FC;border:1px solid #EDF3F8;border-radius:999px;padding:1px 8px}
   .ih .ie{font-size:11px;color:#B4762A;background:#FDF5E7;border:1px solid #F7E6C6;border-radius:999px;padding:1px 8px;margin-left:auto}
-
   .isl-h{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);gap:7px;align-items:stretch}
   .island.dense .isl-h{grid-template-columns:minmax(0,1fr) 84px minmax(0,1fr)}
-  .isl-narrow{display:grid;grid-template-columns:1fr 84px 1fr;gap:7px}
   .col{display:flex;flex-direction:column;gap:6px;justify-content:center}
-  .desk{background:linear-gradient(180deg,#FFFDF4,#FFF8E3);border:1px solid #F0E4C2;border-radius:12px;
+  .desk-cell{background:linear-gradient(180deg,#FFFDF4,#FFF8E3);border:1px solid #F0E4C2;border-radius:12px;
     display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;padding:8px 6px;text-align:center}
-  .desk span{font-size:11.5px;color:#8B7440;font-weight:600;line-height:1.3}
-  .desk span+span{border-top:1px dashed #EBDCB4;padding-top:6px;margin-top:4px;width:100%}
-  .stack{display:flex;flex-direction:column;gap:6px}
-  .isl-v{display:flex;flex-direction:column;gap:6px;max-width:210px}
-  .isl-v .desk{padding:7px 8px}
+  .desk-cell span{font-size:11.5px;color:#8B7440;font-weight:600;line-height:1.3}
+  .desk-cell span+span{border-top:1px dashed #EBDCB4;padding-top:6px;margin-top:4px;width:100%}
   .row-seats{display:flex;flex-wrap:wrap;gap:7px}
   .island.rowy .seat{width:auto;min-width:132px}
   .island.rowy{align-self:start}
+  .isl-v{display:flex;flex-direction:column;gap:6px;max-width:210px;margin:auto 0}
+  .isl-v .desk-cell{padding:7px 8px}
+  .island.rowy .row-seats{margin:auto 0}
 
-  /* ---------- seat ---------- */
-  .seat{display:flex;align-items:center;gap:7px;width:100%;min-width:0;min-width:0;padding:8px 10px;border:1px solid #E7EEF5;border-radius:999px;
+  .seat{display:flex;align-items:center;gap:7px;width:100%;min-width:0;padding:8px 10px;border:1px solid #E7EEF5;border-radius:999px;
     background:#fff;font:inherit;cursor:pointer;transition:.16s;text-align:left;min-height:36px}
   .seat .dot{width:8px;height:8px;border-radius:50%;background:var(--c,#B8C6D3);flex:0 0 auto;
     box-shadow:0 0 0 3px color-mix(in srgb,var(--c,#B8C6D3) 14%,transparent)}
@@ -116,38 +165,23 @@
   .seat.empty{border-style:dashed;border-color:#DCE6EF;background:#FAFCFE;color:#AEBECC;cursor:default}
   .seat.empty b{color:#AEBECC;font-weight:500}
   .seat.empty:hover{transform:none;box-shadow:none;border-color:#DCE6EF}
-  .seat.dim{opacity:.22;filter:grayscale(.4)}
+  .seat.dim{opacity:.22}
   .seat.hit{border-color:#F4C56A;background:#FFFBEC;box-shadow:0 0 0 3px rgba(244,197,106,.22)}
   .seat.tagged{box-shadow:inset 0 0 0 1px #EFD5A2}
-  .island.dense .seat .tag{display:none}
-  .isl-v{margin:auto 0}
-  .island.rowy .row-seats{margin:auto 0}
-  .seat.tagged{box-shadow:inset 0 0 0 1px #EFD5A2}
-  .island.dense .seat .tag{display:none}
-  .isl-v{margin:auto 0}
-  .island.rowy .row-seats{margin:auto 0}
   .seat.hide{display:none}
-  @container (max-width: 372px){ .seat em{display:none} }
-  @container (max-width: 372px){ .seat em{display:none} }
   .island.dense .seat{padding:7px 9px;gap:6px}
   .island.dense .seat em{display:none}
   .island.dense .seat b{font-size:13px}
-  .island.dense .seat{padding:7px 9px;gap:6px}
-  .island.dense .seat em{display:none}
-  .island.dense .seat b{font-size:13px}
+  @container (max-width: 372px){ .seat em{display:none} }
 
-  /* ---------- facilities ---------- */
-  .fac{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .fac{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
   .fac span{font-size:11.5px;color:#5B6B7C;background:#F3F8FC;border:1px solid #E6EFF6;border-radius:8px;padding:4px 9px}
 
-  /* ---------- dept bars ---------- */
-  .dbar{display:grid;grid-template-columns:78px 1fr 30px;align-items:center;gap:8px;margin-bottom:8px}
+  .dbar{display:grid;grid-template-columns:74px 1fr 26px;align-items:center;gap:8px;margin-bottom:8px}
   .dbar .dn{font-size:11.5px;color:#41556A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .dbar .bl{height:8px;border-radius:99px;background:#EEF4F9;overflow:hidden}
   .dbar .bl i{display:block;height:100%;border-radius:99px}
   .dbar .dc{font-size:11px;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
-
-  /* ---------- empty list / tips ---------- */
   .elist{display:flex;flex-direction:column;gap:7px}
   .elist .e{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#41556A;
     background:#F8FBFD;border:1px dashed #DCE6EF;border-radius:10px;padding:7px 10px}
@@ -159,8 +193,7 @@
   .tips li b{color:var(--ink)}
   .note{font-size:11.5px;color:var(--mut);line-height:1.65}
 
-  /* ---------- modal ---------- */
-  .mask{position:fixed;inset:0;background:rgba(15,23,42,.28);backdrop-filter:blur(3px);z-index:60;
+  .mask{position:fixed;inset:0;background:rgba(15,23,42,.28);backdrop-filter:blur(3px);z-index:90;
     display:none;align-items:center;justify-content:center;padding:20px}
   .mask.on{display:flex}
   .mbox{background:#fff;border-radius:20px;width:min(420px,100%);padding:22px;box-shadow:0 24px 60px rgba(15,23,42,.22);
@@ -176,28 +209,12 @@
   .mrow .mv{color:var(--ink);font-weight:600;text-align:right}
   .mcol{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
   .mcol span{font-size:11.5px;background:#F4F8FB;border:1px solid #E9EFF5;border-radius:7px;padding:2px 7px;color:#41556A}
-  .mcol span.me{background:#E9F8FD;border-color:#A9DEF0;color:#04708C;font-weight:600}
-
-  footer{margin-top:44px;text-align:center;font-size:11.5px;color:#A3B2C0;line-height:1.9}
+  footer{margin-top:40px;text-align:center;font-size:11.5px;color:#A3B2C0;line-height:1.9}
 
   @media(max-width:1080px){
     .cols{grid-template-columns:1fr}
     aside{position:static;order:2;display:grid;grid-template-columns:1fr 1fr}
     aside .card:last-child{grid-column:1/-1}
-  }
-  @media(max-width:540px){
-    .stats{grid-template-columns:repeat(2,1fr)}
-    .isl-h{grid-template-columns:minmax(0,1fr) 74px minmax(0,1fr)}
-    .island.dense .isl-h{grid-template-columns:minmax(0,1fr) 68px minmax(0,1fr)}
-    .seat{padding:7px 8px}
-    .seat b{font-size:13px}
-  }
-  @media(max-width:540px){
-    .stats{grid-template-columns:repeat(2,1fr)}
-    .isl-h{grid-template-columns:minmax(0,1fr) 74px minmax(0,1fr)}
-    .island.dense .isl-h{grid-template-columns:minmax(0,1fr) 68px minmax(0,1fr)}
-    .seat{padding:7px 8px}
-    .seat b{font-size:13px}
   }
   @media(max-width:620px){
     .wrap{padding:18px 14px 50px}
@@ -205,12 +222,15 @@
     .islands{grid-template-columns:1fr}
     aside{grid-template-columns:1fr}
     .st .v{font-size:22px}
+    .planbox{padding:4px;overflow-x:auto}
+    .plansvg{min-width:720px}
   }
+  @media(max-width:540px){ .stats{grid-template-columns:repeat(2,1fr)} }
   @media print{
     .bar-wrap,aside,.mask{display:none!important}
     body{background:#fff}
     .cols{grid-template-columns:1fr}
-    .island{break-inside:avoid}
+    .island,.floor{break-inside:avoid}
   }
 </style>
 </head>
@@ -232,6 +252,10 @@
 
   <div class="bar-wrap">
     <div class="bar">
+      <div class="seg" id="seg">
+        <button data-v="plan" class="on">平面图</button>
+        <button data-v="card">卡片</button>
+      </div>
       <div class="search">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
         <input id="q" type="search" placeholder="搜名字 / 部门，如 张婵、KA三组">
@@ -246,7 +270,10 @@
   </div>
 
   <div class="cols">
-    <main id="floors"></main>
+    <main>
+      <div id="viewPlan"></div>
+      <div id="viewCard" style="display:none"></div>
+    </main>
     <aside>
       <div class="card">
         <h3>部门分布 <b id="deptTotal"></b></h3>
@@ -255,7 +282,7 @@
       <div class="card">
         <h3>空位清单 <b id="emptyTotal"></b></h3>
         <div class="elist" id="emptyList"></div>
-        <p class="note" style="margin:12px 0 0">空位 = 图上画了座位但没写名字。<b>新人可直接落座。</b></p>
+        <p class="note" style="margin:12px 0 0">空位 = 图上画了座位但没写名字，<b>新人可直接落座。</b></p>
       </div>
       <div class="card">
         <h3>调整建议</h3>
@@ -265,10 +292,16 @@
   </div>
 
   <footer>
-    姓名以 11 月考勤花名册（86 人）为准，原图与原表写法不一致处已按花名册更正（如 黄芙睿 → <b>黄芙蓉</b>、训咏贤 → <b>谢咏贤</b>、吴倩珩 → <b>吴倩瑶</b>、潘汶淇 → <b>潘汝淇</b>）。<br>
-    工位口径取原图标注 97 个（1F 14 + 2F 23 + 3F 16 + 4F 40 + 拍摄基地 4）；图上可数 95 座：四楼少画 4 座，拍摄基地 2F 门口另坐 3 人。<br>
-    原图 1F 写「实坐 14」，实际点到名字 11 人、空位 3 个 —— 该处「实坐」应是按工位数写的，已按实际在座重算。
+    姓名以 11 月考勤花名册（86 人）为准，原图写法不一致处已更正（黄芙睿→<b>黄芙蓉</b>、训咏贤→<b>谢咏贤</b>、吴倩珩→<b>吴倩瑶</b>、潘汶淇→<b>潘汝淇</b>）。<br>
+    平面图按原座次表的相邻关系重绘，房间位置为示意、非施工尺寸；工位口径取原表 97 个（1F 14 + 2F 23 + 3F 16 + 4F 40 + 拍摄基地 4），图上可数 95 座。<br>
+    点任意座位可看所在楼层、桌位和旁边同事；搜名字会在图上直接高亮。
   </footer>
+</div>
+
+<div class="zoom" id="zoom">
+  <div class="zoomhd"><b id="zoomName"></b><span class="zt" id="zoomTag"></span>
+    <button id="zoomClose">关闭</button></div>
+  <div class="zoombody" id="zoomBody"></div>
 </div>
 
 <div class="mask" id="mask"><div class="mbox" id="mbox"></div></div>
@@ -418,7 +451,8 @@ const DATA = {
      "name": "办公岛 1",
      "layout": "h",
      "desks": [
-      "商务部 · KA三组"
+      "商务部",
+      "KA三组"
      ],
      "left": [
       {
@@ -502,7 +536,8 @@ const DATA = {
      "name": "办公岛 4",
      "layout": "h",
      "desks": [
-      "商品/售后中台 · KA三组"
+      "商品/售后中台",
+      "KA三组"
      ],
      "left": [
       {
@@ -622,7 +657,8 @@ const DATA = {
      "name": "办公岛 1",
      "layout": "h",
      "desks": [
-      "新锐 · 社媒"
+      "新锐",
+      "社媒"
      ],
      "left": [
       {
@@ -917,7 +953,7 @@ const DATA = {
      "layout": "h",
      "desks": [
       "KA 一 / 三组",
-      "KA 一/三组 · 数据运营中台"
+      "数据运营中台"
      ],
      "left": [
       {
@@ -1028,65 +1064,55 @@ const DATA = {
   }
  ]
 };
+const PLAN = {"floors": [{"id": "1F", "name": "1F 一楼", "tag": "入口 · 前台 · 洽谈", "w": 1160, "h": 520, "parts": [{"t": "room", "x": 30, "y": 26, "w": 78, "h": 38, "label": "洗手台", "small": true}, {"t": "room", "x": 118, "y": 26, "w": 88, "h": 38, "label": "卫生间", "small": true}, {"t": "room", "x": 30, "y": 78, "w": 108, "h": 158, "label": "仓库"}, {"t": "room", "x": 30, "y": 248, "w": 108, "h": 76, "label": "样品暂存"}, {"t": "room", "x": 30, "y": 336, "w": 108, "h": 140, "label": "楼梯", "sub": "通 2F"}, {"t": "room", "x": 880, "y": 26, "w": 100, "h": 74, "label": "水吧"}, {"t": "room", "x": 1006, "y": 128, "w": 112, "h": 118, "label": "前台"}, {"t": "room", "x": 1006, "y": 262, "w": 112, "h": 84, "label": "快递暂存"}, {"t": "round", "x": 962, "y": 152, "r": 34, "label": "圆桌"}, {"t": "round", "x": 962, "y": 252, "r": 34, "label": "圆桌"}, {"t": "corridor", "x": 250, "y": 368, "w": 700, "h": 86, "label": "通道"}, {"t": "door", "x": 1142, "y": 372, "len": 96, "dir": "v"}, {"t": "arrow", "x": 1100, "y": 420, "dir": "left", "label": "大门"}, {"t": "label", "x": 250, "y": 40, "text": "工位 14 · 在座 11", "size": 12, "anchor": "start", "muted": true}, {"t": "desk", "x": 316, "y": 78, "w": 140, "h": 170, "labels": ["KA 一组"], "vertical": false}, {"t": "desk", "x": 680, "y": 78, "w": 140, "h": 170, "labels": ["KA 一组"], "vertical": false}], "seats": [{"n": "陈柏宁", "d": "新锐事业部", "x": 220, "y": 114, "w": 86, "h": 26, "area": "办公岛 A"}, {"n": "刘妍", "d": "学生/实习", "t": "学生", "x": 220, "y": 150, "w": 86, "h": 26, "area": "办公岛 A"}, {"n": "洪海伦", "d": "KA一组", "x": 220, "y": 186, "w": 86, "h": 26, "area": "办公岛 A"}, {"n": "杨岳林", "d": "新锐事业部", "x": 466, "y": 114, "w": 86, "h": 26, "area": "办公岛 A"}, {"n": "黎锦初", "d": "KA一组", "x": 466, "y": 150, "w": 86, "h": 26, "area": "办公岛 A"}, {"n": "卢发怡", "d": "KA一组", "x": 466, "y": 186, "w": 86, "h": 26, "area": "办公岛 A"}, {"n": "王则平", "d": "KA一组", "x": 343, "y": 260, "w": 86, "h": 26, "area": "办公岛 A"}, {"n": "施云春", "d": "KA一组", "x": 584, "y": 114, "w": 86, "h": 26, "area": "办公岛 B"}, {"n": "张雨婷", "d": "KA一组", "x": 584, "y": 150, "w": 86, "h": 26, "area": "办公岛 B"}, {"n": "叶建军", "d": "KA一组", "x": 584, "y": 186, "w": 86, "h": 26, "area": "办公岛 B"}, {"empty": true, "x": 830, "y": 114, "w": 86, "h": 26, "area": "办公岛 B"}, {"empty": true, "x": 830, "y": 150, "w": 86, "h": 26, "area": "办公岛 B"}, {"n": "伍心怡", "d": "KA三组", "x": 830, "y": 186, "w": 86, "h": 26, "area": "办公岛 B"}, {"empty": true, "x": 707, "y": 260, "w": 86, "h": 26, "area": "办公岛 B"}], "_issues": {"overlap": [], "outside": [], "onfurniture": []}}, {"id": "2F", "name": "2F 二楼", "tag": "商务部 · 中台 · 社媒", "w": 1240, "h": 520, "parts": [{"t": "room", "x": 30, "y": 26, "w": 84, "h": 44, "label": "楼梯", "sub": "通 1F/3F", "small": true}, {"t": "room", "x": 30, "y": 84, "w": 118, "h": 96, "label": "隔层"}, {"t": "room", "x": 30, "y": 194, "w": 118, "h": 56, "label": "跑步机", "small": true}, {"t": "room", "x": 30, "y": 264, "w": 118, "h": 56, "label": "空调", "small": true}, {"t": "corridor", "x": 250, "y": 400, "w": 840, "h": 76, "label": "通道"}, {"t": "label", "x": 250, "y": 40, "text": "工位 23 · 在座 22", "size": 12, "anchor": "start", "muted": true}, {"t": "desk", "x": 286, "y": 78, "w": 140, "h": 96, "labels": ["商务部", "KA三组"], "vertical": false}, {"t": "desk", "x": 640, "y": 78, "w": 140, "h": 96, "labels": ["商品 / 售后运营中台"], "vertical": false}, {"t": "desk", "x": 286, "y": 262, "w": 140, "h": 96, "labels": ["KA 一组 / 三组"], "vertical": false}, {"t": "desk", "x": 640, "y": 262, "w": 140, "h": 96, "labels": ["商品/售后中台", "KA三组"], "vertical": false}, {"t": "desk", "x": 1000, "y": 78, "w": 118, "h": 96, "labels": ["社媒营销部"], "vertical": false}, {"t": "desk", "x": 1000, "y": 268, "w": 118, "h": 54, "labels": ["经理位"], "vertical": false}], "seats": [{"n": "刘梓超", "d": "行政部", "x": 190, "y": 95, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "黄芙蓉", "d": "KA三组", "x": 190, "y": 131, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "吴健波", "d": "商务部", "x": 436, "y": 95, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "杨子林", "d": "KA三组", "x": 436, "y": 131, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "雷少敏", "d": "社媒营销部", "x": 544, "y": 95, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "宋琪", "d": "社媒营销部", "x": 544, "y": 131, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "郑锦平", "d": "商品/售后运营中台", "x": 790, "y": 95, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "黄新云", "d": "商品/售后运营中台", "x": 790, "y": 131, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "吴倩瑶", "d": "KA一组", "x": 190, "y": 279, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "陆芳琴", "d": "KA一组", "x": 190, "y": 315, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "蔡梦琦", "d": "KA三组", "x": 436, "y": 279, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "林伟杰", "d": "KA一组", "x": 436, "y": 315, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "钟荣钦", "d": "商品/售后运营中台", "x": 544, "y": 279, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "潘汝淇", "d": "KA三组", "x": 544, "y": 315, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "陈彤彤", "d": "商品/售后运营中台", "x": 790, "y": 279, "w": 86, "h": 26, "area": "办公岛 4"}, {"empty": true, "x": 790, "y": 315, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "邓敏敏", "d": "社媒营销部", "x": 904, "y": 77, "w": 86, "h": 26, "area": "社媒营销部"}, {"n": "尹秀银", "d": "社媒营销部", "x": 904, "y": 113, "w": 86, "h": 26, "area": "社媒营销部"}, {"n": "王雨函", "d": "KA三组", "x": 904, "y": 149, "w": 86, "h": 26, "area": "社媒营销部"}, {"n": "陈忻潼", "d": "社媒营销部", "x": 1128, "y": 77, "w": 86, "h": 26, "area": "社媒营销部"}, {"n": "林嘉怡", "d": "社媒营销部", "x": 1128, "y": 113, "w": 86, "h": 26, "area": "社媒营销部"}, {"n": "冯均艺", "d": "社媒营销部", "x": 1128, "y": 149, "w": 86, "h": 26, "area": "社媒营销部"}, {"n": "颜均懿", "d": "KA一组", "t": "经理位", "x": 1016, "y": 234, "w": 86, "h": 26, "area": "独立经理位"}], "_issues": {"overlap": [], "outside": [], "onfurniture": []}}, {"id": "3F", "name": "3F 三楼", "tag": "会议室 · 行政财务 · 管理层", "w": 1240, "h": 580, "parts": [{"t": "label", "x": 60, "y": 18, "text": "经理位（靠窗 3 席）", "size": 11, "anchor": "start", "muted": true}, {"t": "corridor", "x": 60, "y": 486, "w": 1080, "h": 64, "label": "通道"}, {"t": "room", "x": 1030, "y": 26, "w": 96, "h": 40, "label": "洗手台", "small": true}, {"t": "label", "x": 470, "y": 24, "text": "工位 16 · 在座 16", "size": 12, "anchor": "start", "muted": true}, {"t": "desk", "x": 60, "y": 66, "w": 132, "h": 52, "labels": ["经理位"]}, {"t": "desk", "x": 210, "y": 66, "w": 132, "h": 52, "labels": ["经理位"]}, {"t": "desk", "x": 360, "y": 66, "w": 132, "h": 52, "labels": ["经理位"]}, {"t": "room", "x": 60, "y": 152, "w": 320, "h": 300, "label": "会议室 12 座", "labtop": true}, {"t": "table", "x": 146, "y": 228, "w": 148, "h": 190}, {"t": "desk", "x": 478, "y": 120, "w": 140, "h": 96, "labels": ["新锐", "社媒"], "vertical": false}, {"t": "desk", "x": 478, "y": 300, "w": 140, "h": 96, "labels": ["KA 二组"], "vertical": false}, {"t": "desk", "x": 816, "y": 120, "w": 140, "h": 96, "labels": ["行政财务部"], "vertical": false}, {"t": "desk", "x": 816, "y": 300, "w": 140, "h": 54, "labels": ["经理位"], "vertical": false}, {"t": "round", "x": 1104, "y": 176, "r": 34, "label": "小会议桌"}, {"t": "room", "x": 1074, "y": 300, "w": 106, "h": 38, "label": "展柜", "small": true}, {"t": "room", "x": 1074, "y": 348, "w": 106, "h": 38, "label": "打印机", "small": true}, {"t": "room", "x": 1074, "y": 396, "w": 106, "h": 38, "label": "办公用品", "small": true}], "seats": [{"n": "钟学腾", "d": "KA二组", "t": "经理位", "x": 83, "y": 32, "w": 86, "h": 26, "area": "经理位"}, {"n": "谢咏贤", "d": "新锐事业部", "t": "经理位", "x": 233, "y": 32, "w": 86, "h": 26, "area": "经理位"}, {"n": "徐婉芬", "d": "社媒营销部", "t": "经理位", "x": 383, "y": 32, "w": 86, "h": 26, "area": "经理位"}, {"meeting": true, "x": 68, "y": 228, "w": 74, "h": 24}, {"meeting": true, "x": 68, "y": 269, "w": 74, "h": 24}, {"meeting": true, "x": 68, "y": 311, "w": 74, "h": 24}, {"meeting": true, "x": 68, "y": 352, "w": 74, "h": 24}, {"meeting": true, "x": 68, "y": 394, "w": 74, "h": 24}, {"meeting": true, "x": 298, "y": 228, "w": 74, "h": 24}, {"meeting": true, "x": 298, "y": 269, "w": 74, "h": 24}, {"meeting": true, "x": 298, "y": 311, "w": 74, "h": 24}, {"meeting": true, "x": 298, "y": 352, "w": 74, "h": 24}, {"meeting": true, "x": 298, "y": 394, "w": 74, "h": 24}, {"meeting": true, "x": 142.0, "y": 192, "w": 74, "h": 24}, {"meeting": true, "x": 224.0, "y": 192, "w": 74, "h": 24}, {"n": "林启泰", "d": "新锐事业部", "x": 382, "y": 137, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "王嘉慧", "d": "社媒营销部", "x": 382, "y": 173, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "刘秋花", "d": "新锐事业部", "x": 628, "y": 137, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "梁洁雯", "d": "社媒营销部", "x": 628, "y": 173, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "吴泳昭", "d": "KA二组", "x": 382, "y": 317, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "李静雯", "d": "KA二组", "x": 382, "y": 353, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "卢绮婵", "d": "KA二组", "x": 628, "y": 317, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "马伟伦", "d": "KA二组", "x": 628, "y": 353, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "欧家雯", "d": "财务部", "x": 720, "y": 137, "w": 86, "h": 26, "area": "行政财务部"}, {"n": "吕欢", "d": "行政部", "x": 720, "y": 173, "w": 86, "h": 26, "area": "行政财务部"}, {"n": "张婵", "d": "行政部", "x": 966, "y": 137, "w": 86, "h": 26, "area": "行政财务部"}, {"n": "赵泽萍", "d": "行政部", "x": 966, "y": 173, "w": 86, "h": 26, "area": "行政财务部"}, {"n": "郑泽帆", "d": "管理层", "t": "管理层", "x": 843, "y": 266, "w": 86, "h": 26, "area": "独立经理位"}], "_issues": {"overlap": [], "outside": [], "onfurniture": []}}, {"id": "4F", "name": "4F 四楼", "tag": "40 工位大开间 · 面谈室", "w": 1240, "h": 700, "parts": [{"t": "room", "x": 30, "y": 26, "w": 120, "h": 52, "label": "沙发", "small": true}, {"t": "room", "x": 30, "y": 92, "w": 120, "h": 150, "label": "机房/仓库"}, {"t": "room", "x": 30, "y": 258, "w": 120, "h": 56, "label": "制冰机", "small": true}, {"t": "room", "x": 30, "y": 330, "w": 120, "h": 56, "label": "饮水机", "small": true}, {"t": "room", "x": 30, "y": 402, "w": 120, "h": 56, "label": "冰箱", "small": true}, {"t": "room", "x": 30, "y": 560, "w": 150, "h": 60, "label": "柜子", "small": true}, {"t": "corridor", "x": 210, "y": 606, "w": 780, "h": 58, "label": "走廊"}, {"t": "door", "x": 520, "y": 680, "len": 80, "dir": "h"}, {"t": "door", "x": 760, "y": 680, "len": 80, "dir": "h"}, {"t": "room", "x": 1074, "y": 498, "w": 122, "h": 96, "label": "面谈室", "labtop": true}, {"t": "label", "x": 210, "y": 40, "text": "工位 40（图上 36 座）· 在座 36", "size": 12, "anchor": "start", "muted": true}, {"t": "desk", "x": 228, "y": 96, "w": 130, "h": 56, "labels": ["新锐"], "vertical": false}, {"t": "desk", "x": 228, "y": 336, "w": 130, "h": 56, "labels": ["KA二组 / 新锐"], "vertical": false}, {"t": "desk", "x": 470, "y": 66, "w": 150, "h": 180, "labels": ["KA 二组", "KA 二组"], "vertical": false}, {"t": "desk", "x": 470, "y": 316, "w": 150, "h": 180, "labels": ["KA 一 / 三组", "KA 二 / 三组"], "vertical": false}, {"t": "desk", "x": 880, "y": 66, "w": 150, "h": 180, "labels": ["KA 二 / 三组", "KA 三组"], "vertical": false}, {"t": "desk", "x": 880, "y": 316, "w": 150, "h": 180, "labels": ["KA 一 / 三组", "数据运营中台"], "vertical": false}], "seats": [{"n": "陈柏羽", "d": "新锐事业部", "x": 250, "y": 62, "w": 86, "h": 26, "area": "靠墙位 1"}, {"n": "林汉秋", "d": "新锐事业部", "x": 250, "y": 160, "w": 86, "h": 26, "area": "靠墙位 1"}, {"n": "林欣悦", "d": "KA二组", "x": 250, "y": 302, "w": 86, "h": 26, "area": "靠墙位 2"}, {"n": "梁少华", "d": "KA二组", "t": "待核对", "x": 250, "y": 400, "w": 86, "h": 26, "area": "靠墙位 2"}, {"n": "陈杨杨", "d": "KA二组", "x": 374, "y": 89, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "吴梓泠", "d": "KA二组", "x": 374, "y": 125, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "郑子扬", "d": "KA二组", "x": 374, "y": 161, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "李绪键", "d": "KA二组", "x": 374, "y": 197, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "洪耿豪", "d": "KA二组", "x": 630, "y": 89, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "邓海婷", "d": "KA二组", "x": 630, "y": 125, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "刘金英", "d": "KA二组", "x": 630, "y": 161, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "冼展鸣", "d": "KA二组", "x": 630, "y": 197, "w": 86, "h": 26, "area": "办公岛 1"}, {"n": "郑泽伟", "d": "KA一组", "x": 374, "y": 339, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "蔡梦露", "d": "KA一组", "x": 374, "y": 375, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "颜伟聪", "d": "KA二组", "x": 374, "y": 411, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "潘嘉怡", "d": "KA二组", "x": 374, "y": 447, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "李佳漫", "d": "KA三组", "x": 630, "y": 339, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "吴坚榮", "d": "KA三组", "x": 630, "y": 375, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "唐亚南", "d": "KA一组", "x": 630, "y": 411, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "梁芊芊", "d": "KA三组", "x": 630, "y": 447, "w": 86, "h": 26, "area": "办公岛 2"}, {"n": "刘荣伟", "d": "KA二组", "x": 784, "y": 89, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "林宏杰", "d": "KA三组", "x": 784, "y": 125, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "翟胜冬", "d": "KA三组", "x": 784, "y": 161, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "周玉怡", "d": "KA三组", "x": 784, "y": 197, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "冯莉", "d": "KA三组", "x": 1040, "y": 89, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "杨佳琳", "d": "社媒营销部", "x": 1040, "y": 125, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "关晨阳", "d": "KA三组", "x": 1040, "y": 161, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "陈棉灿", "d": "KA三组", "x": 1040, "y": 197, "w": 86, "h": 26, "area": "办公岛 3"}, {"n": "关彩琼", "d": "KA三组", "x": 784, "y": 339, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "吴慧娇", "d": "KA三组", "x": 784, "y": 375, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "曾贤添", "d": "KA三组", "x": 784, "y": 411, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "钟琦静", "d": "KA三组", "x": 784, "y": 447, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "蔡泽茗", "d": "KA一组", "x": 1040, "y": 339, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "颜均懿", "d": "KA一组", "t": "经理位", "x": 1040, "y": 375, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "曾凯伦", "d": "KA三组", "t": "免考勤", "x": 1040, "y": 411, "w": 86, "h": 26, "area": "办公岛 4"}, {"n": "李梓良", "d": "数据运营中台", "x": 1040, "y": 447, "w": 86, "h": 26, "area": "办公岛 4"}, {"meeting": true, "x": 1100, "y": 530, "w": 70, "h": 22}, {"meeting": true, "x": 1100, "y": 562, "w": 70, "h": 22}], "_issues": {"overlap": [], "outside": [], "onfurniture": []}}, {"id": "PS", "name": "拍摄基地", "tag": "独立楼 · 拍摄 / 仓储", "w": 1160, "h": 600, "parts": [{"t": "door", "x": 520, "y": 14, "len": 110, "dir": "h"}, {"t": "arrow", "x": 560, "y": 34, "dir": "down", "label": "大门"}, {"t": "room", "x": 40, "y": 70, "w": 210, "h": 110, "label": "十克仓库"}, {"t": "room", "x": 440, "y": 70, "w": 200, "h": 110, "label": "学校仓库"}, {"t": "room", "x": 40, "y": 210, "w": 600, "h": 136, "label": "一楼拍摄区域"}, {"t": "room", "x": 40, "y": 372, "w": 280, "h": 120, "label": "二楼拍摄区域"}, {"t": "room", "x": 348, "y": 372, "w": 292, "h": 120, "label": "三楼拍摄区域"}, {"t": "room", "x": 40, "y": 508, "w": 120, "h": 62, "label": "楼梯", "small": true}, {"t": "room", "x": 1030, "y": 76, "w": 90, "h": 46, "label": "楼梯", "small": true}, {"t": "label", "x": 700, "y": 70, "text": "2F 拍摄间门口", "size": 11, "anchor": "start", "muted": true}, {"t": "desk", "x": 780, "y": 190, "w": 120, "h": 84, "labels": ["KA 三组"], "vertical": false}, {"t": "desk", "x": 760, "y": 96, "w": 130, "h": 50, "labels": ["拍摄 / 直播"], "vertical": false}], "seats": [{"n": "苏铭桐", "d": "KA三组", "x": 684, "y": 219, "w": 86, "h": 26, "area": "1F 办公"}, {"n": "林冬琪", "d": "KA三组", "x": 910, "y": 219, "w": 86, "h": 26, "area": "1F 办公"}, {"empty": true, "x": 797, "y": 286, "w": 86, "h": 26, "area": "1F 办公"}, {"n": "陈仙嫦", "d": "KA三组", "x": 686, "y": 62, "w": 86, "h": 26, "area": "2F 门口"}, {"n": "吴芷慧", "d": "KA三组", "x": 782, "y": 62, "w": 86, "h": 26, "area": "2F 门口"}, {"n": "张文海", "d": "KA三组", "x": 878, "y": 62, "w": 86, "h": 26, "area": "2F 门口"}], "_issues": {"overlap": [], "outside": [], "onfurniture": []}}]};
 
 const SHORT = {"商品/售后运营中台":"中台","数据运营中台":"数据台","社媒营销部":"社媒","新锐事业部":"新锐","行政部":"行政","财务部":"财务","管理层":"管理层","学生/实习":"学生"};
 const short = d => SHORT[d] || d;
 const color = d => DATA.deptColors[d] || "#B8C6D3";
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-/* ---------- build index ---------- */
+/* ---------- 索引 ---------- */
 const seats = [];
 DATA.floors.forEach(f=>{
   f.islands.forEach(is=>{
-    const groups = [["left","左列"],["right","右列"],["bottom","前排"],["top","上"],["bottom2","下"]];
+    is._seats = [];
     ["left","right","bottom","top"].forEach(k=>{
-      (is[k]||[]).forEach((s,i)=>{
-        const o = Object.assign({}, s, {
-          floorId:f.id, floorName:f.name, islandId:is.id, islandName:is.name,
-          desks:(is.desks||[]).join(" / "), pos:k, idx:i
-        });
+      (is[k]||[]).forEach(s=>{
+        const o = Object.assign({}, s, {floorId:f.id, floorName:f.name, islandId:is.id,
+          islandName:is.name, desks:(is.desks||[]).join(" / "), pos:k});
+        is._seats.push(o);
         if(!s.empty) seats.push(o);
-        (is["_seats"]=is["_seats"]||[]).push(o);
       });
     });
   });
 });
 
-/* ---------- header ---------- */
 document.getElementById("subtitle").textContent = DATA.meta.subtitle;
 document.getElementById("updated").textContent = DATA.meta.updated;
 
-/* ---------- stats ---------- */
+/* ---------- 统计 ---------- */
 let totalSeats=0, filled=0, empty=0;
 DATA.floors.forEach(f=>{
   let ts=0, fi=0;
-  f.islands.forEach(is=>{ (is._seats||[]).forEach(s=>{ ts++; s.empty?empty++:(fi++,filled++); }); });
+  f.islands.forEach(is=>is._seats.forEach(s=>{ ts++; s.empty?empty++:(fi++,filled++); }));
   f._ts=ts; f._fi=fi; totalSeats+=ts;
 });
-const deptCount = {};
-seats.forEach(s=>deptCount[s.d]= (deptCount[s.d]||0)+1);
-const deptN = Object.keys(deptCount).length;
+const deptCount={};
+seats.forEach(s=>deptCount[s.d]=(deptCount[s.d]||0)+1);
+const depts = Object.keys(deptCount).sort((a,b)=>deptCount[b]-deptCount[a]);
 
 document.getElementById("stats").innerHTML = [
   ["原表工位", DATA.meta.chart_total, "个", ""],
   ["图上座位", totalSeats, "座", "hi"],
   ["在座人数", filled, "人", "hi"],
   ["空位", empty, "个", "warn"],
-  ["部门", deptN, "个", ""],
+  ["部门", depts.length, "个", ""],
   ["区域", DATA.floors.length, "块", ""]
 ].map(([k,v,u,cls])=>`<div class="st ${cls}"><div class="k">${k}</div><div class="v">${v}<small>${u}</small></div></div>`).join("");
 
-/* ---------- dept chips ---------- */
-const depts = Object.keys(deptCount).sort((a,b)=>deptCount[b]-deptCount[a]);
 document.getElementById("deptChips").innerHTML = depts.map(d=>
   `<button class="chip" data-d="${d}"><i class="cd" style="background:${color(d)}"></i>${d}</button>`).join("");
 
-/* ---------- floor nav ---------- */
-document.getElementById("floorNav").innerHTML = DATA.floors.map(f=>{
-  const nm = f.name.replace(/^\S+\s/,"");
-  return `<a href="#f-${f.id}"><b>${nm}</b>在座 ${f._fi} / ${f._ts} 座</a>`;
-}).join("");
-
-/* ---------- dept bars ---------- */
 const maxD = Math.max(...depts.map(d=>deptCount[d]));
 document.getElementById("deptTotal").textContent = seats.length + " 人";
 document.getElementById("deptBars").innerHTML = depts.map(d=>`
@@ -1096,154 +1122,296 @@ document.getElementById("deptBars").innerHTML = depts.map(d=>`
     <div class="dc">${deptCount[d]}</div>
   </div>`).join("");
 
-/* ---------- seats render ---------- */
-function seatHTML(s){
-  if(s.empty) return `<div class="seat empty"><span class="dot" style="--c:#D5E0EA"></span><b>空位</b></div>`;
-  const tag = s.t ? `<i class="tag">${s.t}</i>` : "";
-  return `<button class="seat ${s.t?"tagged":""}" data-n="${s.n}" data-d="${s.d}" title="${s.n} · ${s.d}${s.t?" · "+s.t:""}" style="--c:${color(s.d)}">
-      <span class="dot"></span><b>${s.n}</b>${tag}<em>${short(s.d)}</em>
-    </button>`;
+/* ══════════════ 平面图 ══════════════ */
+function fitFS(text, w, maxfs, minfs){
+  const n = String(text).replace(/\s/g,"").length || 1;
+  return Math.max(minfs||7.6, Math.min(maxfs, (w - 6) / (n * 1.04)));
 }
-function islandHTML(is){
-  const cnt = is._seats.filter(s=>!s.empty).length;
-  const cap = is._seats.length;
-  const gap = cap-cnt>0 ? `<span class="ie">空 ${cap-cnt}</span>` : "";
-  let body="";
-  if(is.layout==="v"){
-    body = `<div class="isl-v">
-      ${(is.top||[]).map(seatHTML).join("")}
-      <div class="desk">${(is.desks||[]).map(t=>`<span>${t}</span>`).join("")}</div>
-      ${(is.bottom||[]).map(seatHTML).join("")}
-    </div>`;
-  }else if(is.layout==="row"){
-    body = `<div class="row-seats">${(is.left||[]).map(seatHTML).join("")}</div>`;
-  }else{
-    body = `<div class="isl-h">
-      <div class="col">${(is.left||[]).map(seatHTML).join("")}</div>
-      <div class="desk">${(is.desks||[]).map(t=>`<span>${t}</span>`).join("")}</div>
-      <div class="col">${(is.right||[]).map(seatHTML).join("")}</div>
-    </div>
-    ${(is.bottom&&is.bottom.length)?`<div class="row-seats" style="margin-top:7px">${is.bottom.map(seatHTML).join("")}</div>`:""}`;
+function deskText(label, cx, cy, w){
+  const parts = String(label).split("·").map(x=>x.trim()).filter(Boolean);
+  if(parts.length>1 && w<178){
+    const fs = fitFS(parts.sort((a,b)=>b.length-a.length)[0], w, 10.4, 7.4);
+    const y0 = cy + 4 - (parts.length-1)*fs/2 - 1;
+    return `<text class="dlabel" x="${cx}" y="${y0}" style="font-size:${fs}px">` +
+      parts.map((t,i)=>`<tspan x="${cx}" dy="${i?fs+1.5:0}">${esc(t)}</tspan>`).join("") + `</text>`;
   }
-  return `<div class="island ${is.layout==="row"?"rowy":""} ${cap>=8?"dense":""}">
-    <div class="ih"><span class="ix">${is.name}</span><span class="ic">${cap} 座</span>${gap}</div>
-    ${body}
-  </div>`;
+  const fs = fitFS(label, w, 11.5, 7.8);
+  return `<text class="dlabel" x="${cx}" y="${cy+4}" style="font-size:${fs}px">${esc(label)}</text>`;
 }
-document.getElementById("floors").innerHTML = DATA.floors.map(f=>{
-  const diff = f.cap - f._ts;
-  const gapTxt = diff>0 ? `<span class="gap">· 原表标注 ${f.cap}，图上少画 ${diff}</span>` : "";
+
+function partHTML(p){
+  const cx = p.x + (p.w||0)/2, cy = p.y + (p.h||0)/2;
+  switch(p.t){
+    case "room":
+      if(p.labtop){
+        return `<rect class="room" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="4"/>`+
+          `<text class="rlabel" x="${p.x+11}" y="${p.y+18}" text-anchor="start" style="font-size:${fitFS(p.label,p.w-22,12.5,9)}px">${esc(p.label)}</text>`;
+      }
+      return `<rect class="room ${p.small?"sm":""}" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="4"/>`+
+        `<text class="rlabel" x="${cx}" y="${p.sub?cy-3:cy+4}" style="font-size:${fitFS(p.label,p.w-14,12,9)}px">${esc(p.label)}</text>`+
+        (p.sub?`<text class="rsub" x="${cx}" y="${cy+12}">${esc(p.sub)}</text>`:"");
+    case "corridor":
+      return `<rect class="corridor" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="6"/>`+
+        `<text class="clabel" x="${cx}" y="${cy+4}">${esc(p.label)}</text>`;
+    case "desk":{
+      const labels = p.labels||[];
+      let t = `<rect class="desk" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="8"/>`;
+      if(labels.length===1){
+        t += deskText(labels[0], cx, cy, p.w - 12);
+      }else if(labels.length>1){
+        t += `<line class="dline" x1="${cx}" y1="${p.y+4}" x2="${cx}" y2="${p.y+p.h-4}"/>`;
+        const sw=(p.w-8)/labels.length;
+        labels.forEach((L,i)=>{
+          t += deskText(L, p.x+4+sw*(i+.5), cy, sw - 4);
+        });
+      }
+      return t;
+    }
+    case "table":
+      return `<rect class="table" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="10" ${p.dash?'stroke-dasharray="5 4"':''}/>`;
+    case "round":
+      return `<circle class="table" cx="${p.x}" cy="${p.y}" r="${p.r}"/>`+
+        `<text class="rlabel" x="${p.x}" y="${p.y+4}" style="fill:#8C9088;font-size:10.5px">${esc(p.label||"")}</text>`;
+    case "door":{
+      if(p.dir==="v") return `<rect class="door-gap" x="${p.x-6}" y="${p.y}" width="12" height="${p.len}"/>`+
+        `<path class="door-arc" d="M${p.x-6},${p.y} A${p.len},${p.len} 0 0 0 ${p.x-6},${p.y+p.len}"/>`;
+      return `<rect class="door-gap" x="${p.x}" y="${p.y-6}" width="${p.len}" height="12"/>`+
+        `<path class="door-arc" d="M${p.x},${p.y-6} A${p.len},${p.len} 0 0 1 ${p.x+p.len},${p.y-6}"/>`;
+    }
+    case "arrow":{
+      const L=42, d=p.dir;
+      if(d==="left") return `<path class="arw" d="M${p.x},${p.y} h-${L}"/><path class="arwhead" d="M${p.x-L},${p.y} l11,-5 v10 z"/>`+
+        `<text class="alabel" x="${p.x-L/2}" y="${p.y-9}" text-anchor="middle">${esc(p.label||"")}</text>`;
+      if(d==="down") return `<path class="arw" d="M${p.x},${p.y} v${L}"/><path class="arwhead" d="M${p.x},${p.y+L} l-5,-11 h10 z"/>`+
+        `<text class="alabel" x="${p.x+10}" y="${p.y+24}" text-anchor="start">${esc(p.label||"")}</text>`;
+      return `<path class="arw" d="M${p.x},${p.y} h${L}"/><path class="arwhead" d="M${p.x+L},${p.y} l-11,-5 v10 z"/>`;
+    }
+    case "label":
+      return `<text class="tlabel" x="${p.x}" y="${p.y}" text-anchor="${p.anchor||"middle"}"
+        style="font-size:${p.size||11}px;fill:${p.muted?"#A2B2C0":"#7C8FA0"}">${esc(p.text)}</text>`;
+  }
+  return "";
+}
+
+function seatSVG(s){
+  if(s.meeting){
+    return `<g class="pseat ghost"><rect class="pbody" x="${s.x}" y="${s.y}" width="${s.w}" height="${s.h}" rx="${s.h/2}"/></g>`;
+  }
+  const c = s.empty ? "#D5E0EA" : color(s.d);
+  const t = s.empty ? "空位" : s.n;
+  return `<g class="pseat ${s.empty?"empty":""}" data-n="${esc(s.n||"")}" data-d="${esc(s.d||"")}" style="--c:${c}">
+      <rect class="pbody" x="${s.x}" y="${s.y}" width="${s.w}" height="${s.h}" rx="${s.h/2}"/>
+      <rect class="pbar" x="${s.x+2}" y="${s.y+5}" width="3.2" height="${s.h-10}" rx="2"/>
+      <text x="${s.x+s.w/2+2}" y="${s.y+s.h/2+4}">${esc(t)}</text>
+    </g>`;
+}
+
+const LEGEND = `<div class="legend">
+    <span><i class="desk"></i>办公桌 / 桌面标签</span>
+    <span><i></i>工位（左侧色点 = 部门）</span>
+    <span><i class="emp"></i>空位</span>
+    <span><i class="tbl"></i>会议桌</span>
+    <span><i class="room"></i>房间 / 功能区</span>
+    <span style="color:#A2B2C0">通道为虚线区域</span>
+  </div>`;
+
+document.getElementById("viewPlan").innerHTML = LEGEND + PLAN.floors.map(f=>{
+  const d = DATA.floors.find(x=>x.id===f.id) || {};
+  const fillN = f.seats.filter(s=>!s.meeting && !s.empty).length;
+  const allN = f.seats.filter(s=>!s.meeting).length;
+  const diff = (d.cap||0) - allN;
   return `<section class="floor" id="f-${f.id}">
     <div class="fh">
       <span class="fn">${f.name}</span>
       <span class="ft">${f.tag}</span>
-      <span class="fc">在座 <b>${f._fi}</b> / 图上 ${f._ts} 座 ${gapTxt}</span>
+      <span class="fc">在座 <b>${fillN}</b> / 图上 ${allN} 座 ${diff>0?`<span class="gap">· 原表标注 ${d.cap}，图上少画 ${diff}</span>`:""}</span>
+      <button class="zoombtn" data-zf="${f.id}">⤢ 放大看</button>
     </div>
-    <div class="islands">${f.islands.map(islandHTML).join("")}</div>
-    <div class="fac">${f.facilities.map(x=>`<span>${x}</span>`).join("")}</div>
+    <div class="planbox">
+      <svg class="plansvg" viewBox="0 0 ${f.w} ${f.h}" preserveAspectRatio="xMidYMid meet">
+        <rect class="wall" x="14" y="10" width="${f.w-28}" height="${f.h-20}" rx="6"/>
+        ${f.parts.map(partHTML).join("")}
+        ${f.seats.map(seatSVG).join("")}
+      </svg>
+    </div>
   </section>`;
 }).join("");
 
-/* ---------- empty list ---------- */
-const el = [];
+/* ══════════════ 卡片视图 ══════════════ */
+function seatHTML(s){
+  if(s.empty) return `<div class="seat empty"><span class="dot" style="--c:#D5E0EA"></span><b>空位</b></div>`;
+  const tag = s.t ? `<i class="tag">${s.t}</i>` : "";
+  return `<button class="seat ${s.t?"tagged":""}" data-n="${esc(s.n)}" data-d="${esc(s.d)}"
+      title="${esc(s.n)} · ${esc(s.d)}${s.t?" · "+esc(s.t):""}" style="--c:${color(s.d)}">
+      <span class="dot"></span><b>${esc(s.n)}</b>${tag}<em>${short(s.d)}</em></button>`;
+}
+function islandHTML(is){
+  const cnt = is._seats.filter(s=>!s.empty).length, cap = is._seats.length;
+  const gap = cap-cnt>0 ? `<span class="ie">空 ${cap-cnt}</span>` : "";
+  const desk = `<div class="desk-cell">${(is.desks||[]).map(t=>`<span>${esc(t)}</span>`).join("")}</div>`;
+  let body;
+  if(is.layout==="v"){
+    body = `<div class="isl-v">${(is.top||[]).map(seatHTML).join("")}${desk}${(is.bottom||[]).map(seatHTML).join("")}</div>`;
+  }else if(is.layout==="row"){
+    body = `<div class="row-seats">${(is.left||[]).map(seatHTML).join("")}</div>`;
+  }else{
+    body = `<div class="isl-h">
+      <div class="col">${(is.left||[]).map(seatHTML).join("")}</div>${desk}
+      <div class="col">${(is.right||[]).map(seatHTML).join("")}</div></div>
+      ${(is.bottom&&is.bottom.length)?`<div class="row-seats" style="margin-top:7px">${is.bottom.map(seatHTML).join("")}</div>`:""}`;
+  }
+  return `<div class="island ${is.layout==="row"?"rowy":""} ${cap>=8?"dense":""}">
+    <div class="ih"><span class="ix">${esc(is.name)}</span><span class="ic">${cap} 座</span>${gap}</div>${body}</div>`;
+}
+document.getElementById("viewCard").innerHTML = DATA.floors.map(f=>{
+  const diff = f.cap - f._ts;
+  const t = diff>0 ? `<span class="gap">· 原表标注 ${f.cap}，图上少画 ${diff}</span>` : "";
+  return `<section class="floor" id="c-${f.id}">
+    <div class="fh"><span class="fn">${f.name}</span><span class="ft">${f.tag}</span>
+      <span class="fc">在座 <b>${f._fi}</b> / 图上 ${f._ts} 座 ${t}</span></div>
+    <div class="islands">${f.islands.map(islandHTML).join("")}</div>
+    <div class="fac">${f.facilities.map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+  </section>`;
+}).join("");
+
+/* ---------- 楼层导航 ---------- */
+document.getElementById("floorNav").innerHTML = DATA.floors.map(f=>{
+  const nm = f.name.replace(/^\S+\s/,"");
+  return `<a href="#f-${f.id}" data-fid="${f.id}"><b>${nm}</b>在座 ${f._fi} / ${f._ts} 座</a>`;
+}).join("");
+
+/* ---------- 空位清单 ---------- */
+const el=[];
 DATA.floors.forEach(f=>f.islands.forEach(is=>{
   is._seats.forEach(s=>{
     if(!s.empty) return;
-    const posCN = {left:"左列",right:"右列",bottom:"岛前",top:"上"}[s.pos]||"";
+    const posCN={left:"左列",right:"右列",bottom:"岛前",top:"上"}[s.pos]||"";
     el.push(`<div class="e"><i>${f.id}</i>${f.name.replace(/^\S+\s/,"")} · ${is.name}${posCN?" "+posCN:""}</div>`);
   });
 }));
 document.getElementById("emptyTotal").textContent = el.length + " 个";
 document.getElementById("emptyList").innerHTML = el.join("") || `<p class="note">当前没有空位</p>`;
 
-/* ---------- tips ---------- */
-const TIPS = [
-  "<b>一楼 3 个空位集中在 KA一组 的办公岛 B</b>（右列上方 2 个 + 岛前 1 个）。这是全公司最集中的空位区，离前台、圆桌洽谈区最近——建议新入职/需要接待客户的岗位优先安排在这里。",
-  "<b>二楼只剩 1 个空位</b>（办公岛 4，陈彤彤对面）。二楼已基本坐满（22/23），后续再进人建议直接往四楼放。",
-  "<b>四楼原表标注 40 座，图上只画了 36 座</b>，缺 4 个。建议要么把座位补齐（岛 4 那排右侧还有空间），要么在表上明确写「预留 4 座」，避免招人时按 40 算却坐不下。",
-  "<b>颜均懿一个人占了两处</b>：二楼有独立经理位，四楼办公岛 4 又有一个工位。建议明确哪个是主座位，另一个标成「机动」。",
-  "<b>KA三组 是全公司散得最开的组</b>：分布在 1F 办公岛 B、2F 办公岛 1/4、2F 社媒岛、4F 办公岛 2/3/4、拍摄基地 —— 共 8 个位置。日常沟通成本高，若后续要合并，优先把 4F 办公岛 3、4 的 KA三组 并到相邻岛。"
-];
-document.getElementById("tips").innerHTML = TIPS.map(t=>`<li>${t}</li>`).join("");
+/* ---------- 调整建议 ---------- */
+document.getElementById("tips").innerHTML = [
+  "<b>一楼 3 个空位全在 KA一组 的办公岛 B</b>（右列上方 2 个 + 岛前 1 个），离前台、洽谈圆桌最近——新入职/接待类岗位优先放这。",
+  "<b>二楼只剩 1 个空位</b>（岛 4，陈彤彤对面）。二楼已基本坐满 22/23，再进人建议直接往四楼放。",
+  "<b>四楼原表标注 40 座，图上只画了 36 座</b>，缺 4 个。建议补齐座位，或在表上写明「预留 4 座」，避免按 40 招人却坐不下。",
+  "<b>颜均懿占了两处</b>：二楼有独立经理位，四楼岛 4 又有工位。建议明确主座位，另一个标「机动」。",
+  "<b>KA三组 散在 8 个位置</b>（1F-B、2F 岛1/4、2F 社媒岛、4F 岛 2/3/4、拍摄基地），是全公司最散的组，需要时可把 4F 岛 3、4 的 KA三组 往相邻岛并。"
+].map(t=>`<li>${t}</li>`).join("");
 
-/* ---------- interactions ---------- */
+/* ---------- 交互 ---------- */
 const state = {q:"", dept:"", onlyEmpty:false};
 function apply(){
   const q = state.q.trim().toLowerCase();
-  let hits = 0;
-  document.querySelectorAll(".seat").forEach(el=>{
-    const name = (el.dataset.n||"").toLowerCase();
-    const dept = el.dataset.d || "";
+  document.querySelectorAll(".seat, .pseat").forEach(n=>{
+    if(n.classList.contains("ghost")) return;
+    const isP = n.classList.contains("pseat");
+    const name = (n.dataset.n||"").toLowerCase();
+    const dept = n.dataset.d||"";
+    const isEmpty = n.classList.contains("empty");
     let show = true;
-    if(state.onlyEmpty){ show = el.classList.contains("empty"); }
-    else if(q){ show = name.includes(q) || dept.toLowerCase().includes(q); }
-    else if(state.dept){ show = dept === state.dept; }
-    el.classList.toggle("dim", !show && !el.classList.contains("empty"));
-    el.classList.toggle("hide", !show);
-    el.classList.toggle("hit", !!(q && show && !el.classList.contains("empty")));
-    if(!show && !el.classList.contains("empty")) el.classList.add("dim");
+    if(state.onlyEmpty) show = isEmpty;
+    else if(q) show = !!name && (name.includes(q) || dept.toLowerCase().includes(q));
+    else if(state.dept) show = dept === state.dept;
+    n.classList.toggle("dim", !show);
+    n.classList.toggle("hit", !!show && !isEmpty && !!(q || state.dept));
+    if(!isP) n.classList.toggle("hide", !show);
   });
   document.querySelectorAll(".island").forEach(is=>{
     const any = [...is.querySelectorAll(".seat")].some(s=>!s.classList.contains("hide"));
     is.style.display = any ? "" : "none";
   });
-  document.querySelectorAll(".floor").forEach(f=>{
+  document.querySelectorAll("#viewCard .floor").forEach(f=>{
     const any = [...f.querySelectorAll(".island")].some(i=>i.style.display!=="none");
     f.style.display = any ? "" : "none";
   });
 }
-document.getElementById("q").addEventListener("input", e=>{
-  state.q = e.target.value; state.dept=""; state.onlyEmpty=false;
+const qEl = document.getElementById("q");
+qEl.addEventListener("input", e=>{
+  state.q=e.target.value; state.dept=""; state.onlyEmpty=false;
   document.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));
   document.getElementById("onlyEmpty").classList.remove("on");
   apply();
 });
 document.getElementById("deptChips").addEventListener("click", e=>{
-  const c = e.target.closest(".chip"); if(!c) return;
-  const d = c.dataset.d;
-  state.dept = state.dept === d ? "" : d;
-  state.q=""; document.getElementById("q").value="";
-  state.onlyEmpty=false; document.getElementById("onlyEmpty").classList.remove("on");
+  const c=e.target.closest(".chip"); if(!c) return;
+  state.dept = state.dept===c.dataset.d ? "" : c.dataset.d;
+  state.q=""; qEl.value=""; state.onlyEmpty=false;
+  document.getElementById("onlyEmpty").classList.remove("on");
   document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on", x===c && !!state.dept));
   apply();
 });
 document.getElementById("onlyEmpty").addEventListener("click", e=>{
-  state.onlyEmpty = !state.onlyEmpty; state.dept=""; state.q="";
-  document.getElementById("q").value="";
+  state.onlyEmpty=!state.onlyEmpty; state.dept=""; state.q=""; qEl.value="";
   document.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));
   e.target.classList.toggle("on", state.onlyEmpty);
   apply();
 });
 document.getElementById("reset").addEventListener("click", ()=>{
-  state.q=""; state.dept=""; state.onlyEmpty=false;
-  document.getElementById("q").value="";
+  state.q=""; state.dept=""; state.onlyEmpty=false; qEl.value="";
   document.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));
   document.getElementById("onlyEmpty").classList.remove("on");
   apply();
 });
 
-/* ---------- modal ---------- */
-const mask = document.getElementById("mask"), mbox = document.getElementById("mbox");
+document.getElementById("seg").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#seg button").forEach(x=>x.classList.toggle("on", x===b));
+  const plan = b.dataset.v==="plan";
+  document.getElementById("viewPlan").style.display = plan ? "" : "none";
+  document.getElementById("viewCard").style.display = plan ? "none" : "";
+  document.querySelectorAll("#floorNav a").forEach(a=>{
+    a.setAttribute("href", (plan?"#f-":"#c-") + a.dataset.fid);
+  });
+});
+
+/* ---------- 放大看 ---------- */
+const zoomEl = document.getElementById("zoom");
 document.addEventListener("click", e=>{
-  const s = e.target.closest(".seat");
-  if(!s || s.classList.contains("empty")) return;
-  const name = s.dataset.n;
-  const me = seats.find(x=>x.n===name);
+  const b = e.target.closest(".zoombtn");
+  if(!b) return;
+  const fid = b.dataset.zf;
+  const f = PLAN.floors.find(x=>x.id===fid);
+  const svg = document.querySelector("#f-" + fid + " svg");
+  if(!f || !svg) return;
+  document.getElementById("zoomName").textContent = f.name + "　" + f.tag;
+  document.getElementById("zoomTag").textContent = "点座位看详情 · 浏览器可继续缩放";
+  document.getElementById("zoomBody").innerHTML = svg.outerHTML;
+  zoomEl.classList.add("on");
+  document.body.style.overflow = "hidden";
+});
+document.getElementById("zoomClose").addEventListener("click", function(){
+  zoomEl.classList.remove("on");
+  document.body.style.overflow = "";
+});
+
+const mask=document.getElementById("mask"), mbox=document.getElementById("mbox");
+document.addEventListener("click", e=>{
+  const s=e.target.closest(".seat, .pseat");
+  if(!s || s.classList.contains("empty") || s.classList.contains("ghost")) return;
+  const me = seats.find(x=>x.n===s.dataset.n);
   if(!me) return;
-  const mates = seats.filter(x=>x.islandId===me.islandId && x.n!==name);
+  const mates = seats.filter(x=>x.islandId===me.islandId && x.n!==me.n);
   mbox.style.setProperty("--c", color(me.d));
   mbox.innerHTML = `
     <button class="mx" onclick="document.getElementById('mask').classList.remove('on')">×</button>
-    <div class="nm"><i></i>${me.n}</div>
-    <div class="dp">${me.d}${me.t?" · "+me.t:""}</div>
-    <div class="mrow"><span class="mk">楼层 / 区域</span><span class="mv">${me.floorName}</span></div>
-    <div class="mrow"><span class="mk">桌位</span><span class="mv">${me.islandName}${(me.desks && me.desks!==me.islandName)?" · "+me.desks:""}</span></div>
-    <div class="mrow"><span class="mk">旁边同事</span>
-      <span class="mcol">${mates.map(m=>`<span>${m.n}</span>`).join("")||'<span>无</span>'}</span></div>`;
+    <div class="nm"><i></i>${esc(me.n)}</div>
+    <div class="dp">${esc(me.d)}${me.t?" · "+esc(me.t):""}</div>
+    <div class="mrow"><span class="mk">楼层 / 区域</span><span class="mv">${esc(me.floorName)}</span></div>
+    <div class="mrow"><span class="mk">桌位</span><span class="mv">${esc(me.islandName)}${(me.desks&&me.desks!==me.islandName)?" · "+esc(me.desks):""}</span></div>
+    <div class="mrow"><span class="mk">旁边同事</span><span class="mcol">${
+      mates.map(m=>`<span>${esc(m.n)}</span>`).join("")||"<span>无</span>"}</span></div>`;
   mask.classList.add("on");
 });
 mask.addEventListener("click", e=>{ if(e.target===mask) mask.classList.remove("on"); });
-document.addEventListener("keydown", e=>{ if(e.key==="Escape") mask.classList.remove("on"); });
+document.addEventListener("keydown", e=>{
+  if(e.key!=="Escape") return;
+  mask.classList.remove("on");
+  zoomEl.classList.remove("on");
+  document.body.style.overflow = "";
+});
 </script>
 </body>
 </html>
