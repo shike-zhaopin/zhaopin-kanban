@@ -77,6 +77,8 @@ th .arr{font-size:10px;opacity:.85;margin-left:3px}
 td{padding:7px 10px;border-bottom:1px solid var(--band);white-space:nowrap;font-variant-numeric:tabular-nums}
 tr:hover td{background:#F6FAF8}
 td.lft{text-align:left} td.num{text-align:right}
+/* 考勤汇总：整表居中（数字右对齐会显得错位） */
+#sumTbl th,#sumTbl td,#sumTbl td.num,#sumTbl td.lft{text-align:center}
 .pill{display:inline-block;padding:1.5px 8px;border-radius:10px;font-size:11px;font-weight:600}
 .pill.gre{background:#EDF3EF;color:#3F6B58}
 .pill.yel{background:var(--yelbg);color:var(--yel)}
