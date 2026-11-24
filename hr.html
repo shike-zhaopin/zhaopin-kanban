@@ -145,8 +145,9 @@ footer a{color:var(--mid)}
   <div id="extraPanels"></div>
 
   <footer>
-    数据来源：《行政人事管理系统(在线)》· 考勤汇总 / 考勤设置（明细）/ 加班调休 (明细) 三个 sheet 的快照。<br>
-    更新方式：Excel 里手动登记后，把新文件发给小游重新生成发布即可（链接不变，刷新就是最新）。
+    数据来源：金山文档《行政人事管理系统(在线).xlsx》—— 考勤汇总 / 考勤设置（明细）/ 加班调休 (明细) / 合同台账，
+    以及在 Excel 里新增的其它子表（自动成 tab）。快照 <b><span id="snap2"></span></b>。<br>
+    更新方式：在 Excel 里改完，跟小游说「<b>同步</b>」，即重新抓取全部子表并发布（链接不变，刷新就是最新）。
   </footer>
 </div>
 
@@ -165,6 +166,7 @@ document.addEventListener("click", function(e){
   document.querySelectorAll(".panel").forEach(function(p){p.classList.toggle("on",p.id==="p-"+t.dataset.p)});
 });
 document.getElementById("snap").textContent = "数据快照 " + D.snapshot;
+var _s2=document.getElementById("snap2"); if(_s2) _s2.textContent = D.snapshot;
 
 /* ── 通用：可排序表 ── */
 function sortTbl(tbl, cols, rows, render){
