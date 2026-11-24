@@ -343,11 +343,13 @@ function sortTbl(tbl, cols, rows, render){
   function draw(){
     var body = rows.slice();
     if(st.k!==null){
+      var cmp = cols[st.k] && cols[st.k].cmp;
       body.sort(function(a,b){
+        if(cmp){ return cmp(a[st.k], b[st.k]) * st.dir; }
         var x=a[st.k], y=b[st.k];
         var nx=parseFloat(x), ny=parseFloat(y);
         if(!isNaN(nx)&&!isNaN(ny)&&(typeof x==="number"||typeof y==="number"||String(x).match(/[\d.]/))){x=nx;y=ny;}
-        else {x=String(x==null?"":x);y=String(y==null?"":y);}
+        else { return String(x==null?"":x).localeCompare(String(y==null?"":y),"zh")*st.dir; }
         return (x<y?-1:x>y?1:0)*st.dir;
       });
     }
@@ -367,7 +369,17 @@ function sortTbl(tbl, cols, rows, render){
 }
 
 /* ── 考勤汇总 ── */
-var depts = [...new Set(D.summary.map(function(x){return x.dept}).filter(Boolean))].sort();
+/* 部门排序口径（她 2026-11-24 指定）：总经办→行政→财务→…→KA一二三组→商品→社媒→新锐→其它 */
+var DEPT_ORDER = ["总经办","行政部","财务部","人事部","商务部","数据运营中台",
+                  "KA一组","KA二组","KA三组","商品","社媒","新锐"];
+function deptRank(d){
+  var t = String(d==null?"":d);
+  for(var i=0;i<DEPT_ORDER.length;i++){ if(t.indexOf(DEPT_ORDER[i])>=0) return i; }
+  return 99;
+}
+
+var depts = [...new Set(D.summary.map(function(x){return x.dept}).filter(Boolean))]
+  .sort(function(a,b){return (deptRank(a)-deptRank(b)) || String(a).localeCompare(String(b),"zh")});
 var fDept = document.getElementById("fDept");
 fDept.innerHTML = '<option value="">全部部门</option>' + depts.map(function(d){return '<option>'+esc(d)+'</option>'}).join("");
 
@@ -387,8 +399,20 @@ function tenureOf(hire, fallback){
 }
 var EXAM_CLS = {"未安排":"red", "已安排":"org", "已体检":"gre"};
 
+function tenureCmp(a,b){
+  function v(s){
+    var m = String(s||"").match(/(\d+)\s*年(\d+)\s*个月(\d+)\s*天/);
+    if(!m) return -1;
+    return (+m[1])*365 + (+m[2])*30 + (+m[3]);
+  }
+  return v(a)-v(b);
+}
 var sumCols = [
-  {t:"姓名"},{t:"部门"},{t:"入职日期"},{t:"入职周期"},{t:"剩余假期总额(天)"},
+  {t:"姓名", cmp:function(a,b){return String(a).localeCompare(String(b),"zh");}},
+  {t:"部门", cmp:function(a,b){return (deptRank(a)-deptRank(b)) || String(a).localeCompare(String(b),"zh");}},
+  {t:"入职日期", cmp:function(a,b){return String(a).localeCompare(String(b),"zh");}},
+  {t:"入职周期", cmp:tenureCmp},
+  {t:"剩余假期总额(天)"},
   {t:"年假余额(2026)"},{t:"带薪休假"},{t:"育儿假"},{t:"陪产假"},
   {t:"病假"},{t:"产检假"},{t:"调休(天/小时)"},{t:"体检"}
 ];
@@ -400,6 +424,8 @@ function drawSummary(){
     /* 病假当年累计 ≥20 天 → 置顶（需重点关注） */
     var sa=(+a.sick||0)>=SICK_ALERT?1:0, sb=(+b.sick||0)>=SICK_ALERT?1:0;
     if(sa!==sb) return sb-sa;
+    var ra=deptRank(a.dept), rb=deptRank(b.dept);
+    if(ra!==rb) return ra-rb;
     if(a.dept!==b.dept) return String(a.dept).localeCompare(String(b.dept),"zh");
     return String(a.name).localeCompare(String(b.name),"zh");
   });
