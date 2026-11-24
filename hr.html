@@ -910,20 +910,28 @@ if(D.anomaly){
   /* 4) 复制文本（含旧浏览器兜底） */
   function copyText(txt){
     return new Promise(function(res){
+      var done = false;
+      function fin(ok){ if(done) return; done = true; res(!!ok); }
+      setTimeout(function(){ fin(false); }, 1500);   /* 剪贴板 API 无响应时兜底 */
       function fb(){
         try{
           var ta = document.createElement("textarea");
           ta.value = txt;
           ta.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0";
           document.body.appendChild(ta); ta.select();
-          var ok = document.execCommand("copy");
+          var ok = false;
+          try{ ok = document.execCommand("copy"); }catch(e2){ ok = false; }
           document.body.removeChild(ta);
-          res(ok);
-        }catch(e){ res(false); }
+          fin(ok);
+        }catch(e){ fin(false); }
       }
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(txt).then(function(){ res(true); }, fb);
-      }else fb();
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          var pr = navigator.clipboard.writeText(txt);
+          if(pr && pr.then) pr.then(function(){ fin(true); }, fb);
+          else fin(true);
+        }else fb();
+      }catch(e){ fb(); }
     });
   }
 
@@ -988,14 +996,18 @@ if(D.anomaly){
   var btnShot = document.getElementById("stShot");
 
   if(btnShare) btnShare.addEventListener("click", function(){
-    copyText(SHARE_URL).then(function(ok){
-      if(ok){
-        toast("🔗 座次表链接已复制<br><b>" + SHARE_URL + "</b><br>发出去打开就是座次表独立页面，不含考勤等其它板块");
-      }else{
-        toast("链接复制被浏览器拦了，已改为复制高清截图…", 1600);
-        copyShot();
-      }
-    });
+    function okLink(){
+      toast("🔗 座次表链接已复制<br><b>" + SHARE_URL + "</b><br>发出去打开就是座次表独立页面，不含考勤等其它板块", 4200);
+    }
+    function fallbackShot(){
+      toast("链接复制被浏览器拦了，改为复制高清截图…", 1800);
+      copyShot();
+    }
+    try{
+      var pr = copyText(SHARE_URL);
+      if(pr && pr.then) pr.then(function(ok){ ok ? okLink() : fallbackShot(); }, fallbackShot);
+      else okLink();
+    }catch(e){ fallbackShot(); }
   });
 
   if(btnShot) btnShot.addEventListener("click", function(){
