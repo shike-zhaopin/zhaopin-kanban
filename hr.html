@@ -590,6 +590,7 @@ if(D.anomaly){
     return [y,m,d];
   }
   function pad(n){ return n<10 ? "0"+n : ""+n; }
+  function fmtCN(d){ return d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日"; }
   function fmt(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
   function daysBetween(a, b){
     var x = new Date(a.getFullYear(), a.getMonth(), a.getDate());
@@ -626,24 +627,33 @@ if(D.anomaly){
     var dt = daysBetween(TODAY, next);
     var act = actionFor(target);
     items.push({k:"周年", id:"a|"+p.name+"|"+fmt(next), name:p.name, dept:p.dept||"",
-      date:fmt(next), days:dt, years:target, tenure:tenure,
+      date:fmtCN(next), days:dt, years:target, tenure:tenure,
       title:act[0], label:act[1], hire:fmt(hire), exam:p.exam||""});
 
     /* 年假余额（当年）：12/31 前未休完 → 待办，带到期倒计时 */
     if((p.annual || 0) > 0.02){
       var dl = new Date(TODAY.getFullYear(), 11, 31);
       items.push({k:"年假", id:"l|"+p.name+"|"+TODAY.getFullYear(), name:p.name, dept:p.dept||"",
-        date:fmt(dl), days:daysBetween(TODAY, dl), years:null, tenure:tenure,
+        date:fmtCN(dl), days:daysBetween(TODAY, dl), years:null, tenure:tenure,
         hire:fmt(hire), annual:p.annual,
-        title:"年假余额 "+p.annual+" 天未休（"+fmt(dl)+" 清零）",
+        title:"年假余额 "+p.annual+" 天未休（"+fmtCN(dl)+" 清零）",
         label:"当年年假余额 "+p.annual+" 天，请在 12 月 31 日前休完", exam:p.exam||""});
     }
 
-    /* 体检：满 EXAM_MIN 年且未安排 */
-    if((p.exam||"")==="未安排" && yearsDone>=EXAM_MIN){
-      items.push({k:"体检", id:"e|"+p.name, name:p.name, dept:p.dept||"", date:"",
-        days:null, years:yearsDone, tenure:tenure, hire:fmt(hire),
-        title:"安排员工体检", label:"入职满 "+yearsDone+" 年，体检仍未安排", exam:p.exam||""});
+    /* 体检：满 EXAM_MIN 年该做体检；未安排 → 到期日 ≤ 90 天内都提示
+       （已过到期日 = 过时 → 显示「即刻」；还没到但 ≤90 天 → 显示日期 +（即将逾期）） */
+    if((p.exam||"")==="未安排"){
+      var due = addYears(hire, EXAM_MIN);
+      var dDue = daysBetween(TODAY, due);
+      if(dDue <= 90){
+        var dateTxt = dDue <= 0 ? "即刻" : fmtCN(due)+"（即将逾期）";
+        var label = dDue <= 0
+          ? "体检已过时（"+fmtCN(due)+" 起就该安排），请即刻安排"
+          : fmtCN(due)+" 满 "+EXAM_MIN+" 年，体检需提前安排（即将逾期）";
+        items.push({k:"体检", id:"e|"+p.name, name:p.name, dept:p.dept||"", date:dateTxt,
+          days:dDue, years:EXAM_MIN, tenure:tenure, hire:fmt(hire),
+          title:"安排员工体检", label:label, exam:p.exam||""});
+      }
     }
   });
 
@@ -673,7 +683,7 @@ if(D.anomaly){
     if(window.refreshAttBadge) window.refreshAttBadge();
   }
 
-  var cols=[{t:"已完成"},{t:"类型"},{t:"姓名"},{t:"部门"},{t:"已满年限"},{t:"日期"},{t:"剩余天数"},{t:"应做事项"}];
+  var cols=[{t:"已完成"},{t:"类型"},{t:"姓名"},{t:"部门"},{t:"已满年限"},{t:"安排日期"},{t:"剩余天数"},{t:"应做事项"}];
 
   function draw(){
     var ty=tdType.value, rg=+tdRange.value, kw=(tdKw.value||"").trim();
@@ -699,7 +709,7 @@ if(D.anomaly){
         "<td><span class='pill "+(TYPE_PILL[r[1]]||"gry")+"'>"+esc(r[1])+"</span></td>"+
         "<td class='lft'><b>"+esc(r[2])+"</b></td><td>"+esc(r[3])+"</td><td>"+esc(r[4])+"</td>"+
         "<td class='gry'>"+esc(r[5])+"</td>"+
-        "<td class='num'>"+(r[6]==null?"–":(r[6]<=0?"<b style='color:var(--red)'>今天</b>":r[6]+" 天"))+"</td>"+
+        "<td class='num'>"+(r[6]==null?"–":(r[6]<0?"<b style='color:var(--red)'>逾期 "+(-r[6])+" 天</b>":(r[6]===0?"<b style='color:var(--red)'>今天</b>":r[6]+" 天")))+"</td>"+
         "<td class='lft reason'>"+esc(r[7])+"</td></tr>";
     });
 
