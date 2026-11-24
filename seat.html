@@ -226,6 +226,14 @@
     .plansvg{min-width:720px}
   }
   @media(max-width:540px){ .stats{grid-template-columns:repeat(2,1fr)} }
+  /* 内嵌在看板 iframe 里时：收起冗余，给平面图让出宽度 */
+  body.embed .stats{display:none}
+  body.embed aside{display:none}
+  body.embed .cols{grid-template-columns:1fr}
+  body.embed .hd{margin-bottom:12px}
+  body.embed .hd h1{font-size:24px}
+  body.embed .wrap{padding:16px 16px 40px}
+
   @media print{
     .bar-wrap,aside,.mask{display:none!important}
     body{background:#fff}
@@ -307,6 +315,8 @@
 <div class="mask" id="mask"><div class="mbox" id="mbox"></div></div>
 
 <script>
+if (window.self !== window.top) document.body.classList.add("embed");
+
 const DATA = {
  "meta": {
   "title": "十克 · 公司座次表",
