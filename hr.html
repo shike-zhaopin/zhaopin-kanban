@@ -26,6 +26,17 @@ body{font-family:"PingFang SC","Microsoft YaHei",-apple-system,"Helvetica Neue",
 .tab{border:1px solid var(--line);background:#fff;color:var(--ink2);font-size:13px;font-weight:600;
   padding:8px 18px;border-radius:8px;cursor:pointer;font-family:inherit}
 .tab.on{background:var(--dark);border-color:var(--dark);color:#fff}
+.subtabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;padding-bottom:2px}
+.subtab{border:1px solid var(--line);background:#fff;color:var(--ink2);font-size:12.5px;font-weight:600;
+  padding:6px 14px;border-radius:20px;cursor:pointer;font-family:inherit}
+.subtab.on{background:var(--mid);border-color:var(--mid);color:#fff}
+.subpanel{display:none}.subpanel.on{display:block}
+.hblink{margin-left:10px;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.14);
+  color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.22);white-space:nowrap}
+.hblink:hover{background:rgba(255,255,255,.26)}
+.dotbadge{display:inline-block;min-width:16px;height:16px;line-height:16px;padding:0 4px;margin-left:5px;
+  background:#D93025;color:#fff;border-radius:9px;font-size:10.5px;font-weight:700;text-align:center;vertical-align:middle}
 .cards{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:12px}
 .card{background:var(--page);border:1px solid var(--line);border-radius:8px;padding:11px 13px}
 .card .n{font-size:21px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
@@ -61,6 +72,21 @@ td.lft{text-align:left} td.num{text-align:right}
 .ctframe{width:100%;height:calc(100vh - 152px);min-height:620px;border:1px solid var(--line);
   border-radius:10px;background:#fff;display:block}
 @media(max-width:640px){.ctframe{height:calc(100dvh - 168px);min-height:520px;border-radius:8px}}
+@media(max-width:640px){
+  .topbar{padding:0 12px;gap:8px}
+  .brand{font-size:13px;letter-spacing:.4px}
+  .brand em{display:none}
+  .hblink{margin-left:0;padding:5px 10px;font-size:11.5px}
+  .wrap{padding:14px 12px 50px}
+  .tabs{gap:6px}.tab{padding:7px 13px;font-size:12.5px}
+  .subtabs{gap:5px}.subtab{padding:5px 11px;font-size:11.5px}
+  .cards{grid-template-columns:repeat(2,1fr);gap:8px}
+  .card{min-width:0;padding:9px 10px}
+  .card .n{font-size:18px}
+  .card .l{white-space:normal;line-height:1.3}
+  .tblwrap{max-width:100%}
+  th,td{padding:7px 8px;font-size:12px}
+}
 .reason{white-space:normal;max-width:420px;color:var(--ink2)}
 footer{margin-top:26px;font-size:11.5px;color:var(--mute);line-height:1.8}
 footer a{color:var(--mid)}
@@ -71,19 +97,26 @@ footer a{color:var(--mid)}
 <div class="topbar">
   <div class="brand">十克 · 行政人事管理系统<em id="snap"></em></div>
   <div class="sp"></div>
+  <a class="hblink" href="https://www.kdocs.cn/l/cgW8ad1WU7ad" target="_blank" rel="noopener" title="员工手册（2026 年 9 月生效正式版）">📖 员工手册</a>
 </div>
 <div class="wrap">
   <div class="tabs">
-    <button class="tab on" data-p="sum">考勤汇总</button>
-    <button class="tab" data-p="leave">请假明细（2026）</button>
-    <button class="tab" data-p="ot">加班调休</button>
-    <button class="tab" data-p="anom">异常情况<span id="anomBadge" style="display:none"></span></button>
-    <button class="tab" data-p="todo">待办提醒<span id="todoBadge" style="display:none"></span></button>
+    <button class="tab on" data-p="att">考勤<span id="attBadge" class="dotbadge" style="display:none"></span></button>
+    <button class="tab" data-p="todo">待办提醒<span id="todoBadge" class="dotbadge" style="display:none"></span></button>
     <button class="tab" data-p="ct">合同台账</button>
   </div>
 
-  <!-- ═══ 考勤汇总 ═══ -->
-  <div class="panel on" id="p-sum">
+  <!-- ═══ 考勤（含：考勤汇总 / 请假明细 / 加班调休 / 异常情况）═══ -->
+  <div class="panel on" id="p-att">
+  <div class="subtabs">
+    <button class="subtab on" data-sub="sum">考勤汇总</button>
+    <button class="subtab" data-sub="leave">请假明细（2026）</button>
+    <button class="subtab" data-sub="ot">加班调休</button>
+    <button class="subtab" data-sub="anom">异常情况<span id="anomBadge" class="dotbadge" style="display:none"></span></button>
+  </div>
+
+  <!-- 考勤汇总 -->
+  <div class="subpanel on" id="p-sum">
     <div class="cards" id="sumCards"></div>
     <div class="note">口径：<b>调休假 1 天 = 7 小时</b>（与汇总表公式一致）。</div>
     <div class="filters">
@@ -95,7 +128,7 @@ footer a{color:var(--mid)}
   </div>
 
   <!-- ═══ 请假明细 ═══ -->
-  <div class="panel" id="p-leave">
+  <div class="subpanel" id="p-leave">
     <div class="filters">
       <select id="lMon"></select>
       <select id="lType"></select>
@@ -107,7 +140,7 @@ footer a{color:var(--mid)}
   </div>
 
   <!-- ═══ 加班调休 ═══ -->
-  <div class="panel" id="p-ot">
+  <div class="subpanel" id="p-ot">
     <div class="cards" id="otCards"></div>
     <div class="note">单位：小时（h）。剩余天数按 <b>÷7</b> 换算，与考勤汇总页一致。</div>
     <div class="h2">每人汇总（按剩余排序）</div>
@@ -121,7 +154,7 @@ footer a{color:var(--mid)}
   </div>
 
   <!-- ═══ 异常情况 ═══ -->
-  <div class="panel" id="p-anom">
+  <div class="subpanel" id="p-anom">
     <div class="cards" id="anCards"></div>
     <div class="note" id="anNote"></div>
     <div class="filters">
@@ -136,6 +169,8 @@ footer a{color:var(--mid)}
     </div>
     <div class="tblwrap"><table id="aTbl"></table></div>
   </div>
+
+  </div><!-- /#p-att 考勤 -->
 
   <!-- ═══ 待办提醒（周年 / 体检 / 病假）═══ -->
   <div class="panel" id="p-todo">
@@ -183,7 +218,14 @@ function sum(a,k){return a.reduce(function(s,x){return s+(+x[k]||0)},0)}
 
 /* ── tab（事件委托，动态新增子表 tab 也能切换）── */
 document.addEventListener("click", function(e){
-  var t = e.target.closest ? e.target.closest(".tab") : null;
+  if(!e.target.closest) return;
+  var st = e.target.closest(".subtab");
+  if(st && st.dataset.sub){
+    document.querySelectorAll(".subtab").forEach(function(x){x.classList.toggle("on",x===st)});
+    document.querySelectorAll(".subpanel").forEach(function(p){p.classList.toggle("on",p.id==="p-"+st.dataset.sub)});
+    return;
+  }
+  var t = e.target.closest(".tab");
   if(!t || !t.dataset.p) return;
   document.querySelectorAll(".tab").forEach(function(x){x.classList.toggle("on",x===t)});
   document.querySelectorAll(".panel").forEach(function(p){p.classList.toggle("on",p.id==="p-"+t.dataset.p)});
@@ -368,7 +410,11 @@ if(D.anomaly){
   var byType={}; A.forEach(function(x){ byType[x.type]=(byType[x.type]||0)+1 });
   var pending=A.filter(function(x){return !done[x.name+"|"+x.type]}).length;
   var badge=document.getElementById("anomBadge");
-  if(pending){ badge.style.display="inline-block"; badge.style.cssText+=";margin-left:6px;background:#B42318;color:#fff;font-size:10.5px;padding:1px 7px;border-radius:9px;vertical-align:1px"; badge.textContent=pending; }
+  var ab=document.getElementById("attBadge");
+  if(pending){
+    badge.style.display="inline-block"; badge.textContent=pending;
+    if(ab){ ab.style.display="inline-block"; ab.textContent=pending; }
+  }
   document.getElementById("anCards").innerHTML=[
     {n:pending,l:"待处理",c:"red"},
     {n:byType["调休"]||0,l:"调休差异",c:"red"},
