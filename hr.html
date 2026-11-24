@@ -643,6 +643,7 @@ if(D.anomaly){
 (function(){
   var T = D.todo || {staff:[], sick:[], sick_limit:20, exam_min_years:2};
   var EXAM_MIN = T.exam_min_years || 2;
+  var ANNIV_ALERT = 45;   /* 周年提前 45 天开始提醒（她 2026-11-24 定） */
 
   /* ===== 日期工具（等价于 Excel 的 DATEDIF / EDATE）===== */
   function parseD(s){
@@ -701,9 +702,11 @@ if(D.anomaly){
     }
     var dt = daysBetween(TODAY, next);
     var act = actionFor(target);
-    items.push({k:"周年", id:"a|"+p.name+"|"+fmt(next), name:p.name, dept:p.dept||"",
-      date:fmtCN(next), days:dt, years:target, tenure:tenure,
-      title:act[0], label:act[1], hire:fmt(hire), exam:p.exam||""});
+    if(dt <= ANNIV_ALERT){          /* 周年只在 45 天内提醒 */
+      items.push({k:"周年", id:"a|"+p.name+"|"+fmt(next), name:p.name, dept:p.dept||"",
+        date:fmtCN(next), days:dt, years:target, tenure:tenure,
+        title:act[0], label:act[1], hire:fmt(hire), exam:p.exam||""});
+    }
 
     /* 年假余额（当年）：12/31 前未休完 → 待办，带到期倒计时 */
     if((p.annual || 0) > 0.02){
@@ -837,13 +840,13 @@ if(D.anomaly){
   }
 
   var c30=items.filter(function(x){return x.k==="周年"&&x.days<=30}).length;
-  var c90=items.filter(function(x){return x.k==="周年"&&x.days<=90}).length;
+  var c45=items.filter(function(x){return x.k==="周年"&&x.days<=ANNIV_ALERT}).length;
   var cn=items.filter(function(x){return x.k==="体检"}).length;
   var cl=items.filter(function(x){return x.k==="年假"}).length;
   var cs=items.filter(function(x){return x.k==="病假"}).length;
   document.getElementById("tdCards").innerHTML = [
     {n:c30, l:"30 天内周年", c:"red"},
-    {n:c90, l:"90 天内周年", c:"yel"},
+    {n:c45, l:"45 天内周年", c:"yel"},
     {n:cl,  l:"年假未休（12/31）", c:"gre"},
     {n:cn,  l:"满"+EXAM_MIN+"年待体检", c:"org"},
     {n:cs,  l:"病假≥"+(T.sick_limit||20)+"天", c:"red"},
@@ -851,7 +854,7 @@ if(D.anomaly){
   ].map(function(x){return '<div class="card '+x.c+'"><div class="n">'+x.n+'</div><div class="l">'+x.l+'</div></div>'}).join("");
 
   document.getElementById("tdNote").innerHTML =
-    "周年与剩余天数按<b>入职日期</b>实时计算（打开/刷新页面即按当天重算）。满1年→增加年假；"+
+    "周年与剩余天数按<b>入职日期</b>实时计算（打开/刷新即按当天重算），<b>只在满 45 天内提醒</b>。满1年→增加年假；"+
     "满2年→安排体检；满3年→3天带薪福利假；满4年→仅提醒；满5年→5天福利假；满10年→8天带薪福利假。"+
     "体检：满 "+EXAM_MIN+" 年且「未安排」→ 单独提醒。病假当年累计满 "+(T.sick_limit||20)+" 天 → 提醒。"+
     "<b>年假余额（当年）</b>：12 月 31 日到期，未休完的一律列出并显示距清零天数（免管名单已剔除）。";
