@@ -1031,7 +1031,7 @@ const DATA = {
    "islands": [
     {
      "id": "PS-1F",
-     "name": "1F· KA三组",
+     "name": "一楼工位",
      "layout": "h",
      "desks": [
       "KA 三组"
@@ -1056,7 +1056,7 @@ const DATA = {
     },
     {
      "id": "PS-2F",
-     "name": "2F· 拍摄间门口",
+     "name": "二楼门口",
      "layout": "row",
      "desks": [
       "拍摄 / 直播"
@@ -1305,7 +1305,7 @@ DATA.floors.forEach(f=>f.islands.forEach(is=>{
   is._seats.forEach(s=>{
     if(!s.empty) return;
     const posCN={left:"左列",right:"右列",bottom:"岛前",top:"上"}[s.pos]||"";
-    el.push(`<div class="e"><i>${esc(f.code||f.id)}</i>${esc(f.name.replace(/^\S+\s+/,""))} · ${esc(is.name)}${posCN?" "+posCN:""}</div>`);
+    el.push(`<div class="e"><i>${esc(f.code||f.id)}</i>${esc(is.name)}${posCN?" · "+posCN:""}</div>`);
   });
 }));
 document.getElementById("emptyTotal").textContent = el.length + " 个";
