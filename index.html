@@ -142,6 +142,7 @@
   <select id="weekSel" aria-label="选择周报周期"></select>
   <button class="wb-btn" id="btnPrev" type="button">上周</button>
   <button class="wb-btn" id="btnThis" type="button">本周</button>
+  <button class="wb-btn" id="btnCmp" type="button">两周对比</button>
   <span class="wb-cur" id="weekCur"></span>
 </div>
 
@@ -173,6 +174,7 @@
   var weekCur = document.getElementById('weekCur');
   var btnPrev = document.getElementById('btnPrev');
   var btnThis = document.getElementById('btnThis');
+  var btnCmp  = document.getElementById('btnCmp');
   var frames  = {};
   var current = null;
   var loadingTimer = null;
@@ -229,6 +231,7 @@
   function setWeek(w){
     if (!w) return;
     curWeek = w;
+    if (btnCmp) btnCmp.classList.remove('active');
     var f = frames.weekly;
     if (f){
       loading.classList.remove('hide');
@@ -291,6 +294,20 @@
   weekSel.addEventListener('change', function(){ setWeek(findWeek(weekSel.value)); });
   btnPrev.addEventListener('click', function(){ setWeek(findWeek(PREV_MON)); });
   btnThis.addEventListener('click', function(){ setWeek(findWeek(THIS_MON)); });
+  if (btnCmp) btnCmp.addEventListener('click', function(){
+    var f = frames.weekly;
+    if (!f) { activate('weekly', true); f = frames.weekly; }
+    if (!f) return;
+    loading.classList.remove('hide');
+    clearTimeout(loadingTimer);
+    loadingTimer = setTimeout(function(){ loading.classList.add('hide'); }, 8000);
+    f.dataset.ready = '0';
+    f.src = 'cmp.html?v=' + Date.now();
+    btnCmp.classList.add('active');
+    if (btnPrev) btnPrev.classList.remove('active');
+    if (btnThis) btnThis.classList.remove('active');
+    weekCur.innerHTML = '当前：<b>本周 vs 上周</b>';
+  });
 
   window.addEventListener('hashchange', function(){
     activate((location.hash || '').replace('#',''), false);
